@@ -21,7 +21,7 @@ export default (
   return (
     <div className={className}>
       <div className={styles.Section}>
-        <span>Candicate ID: {candidateId + 1}</span>
+        <span>Candicate ID: {candidateId + 1}/{content.length}</span>
         <Button
           variant="outlined"
           color="primary"
