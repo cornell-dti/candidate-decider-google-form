@@ -1,0 +1,27 @@
+name: CD
+on:
+  push:
+    branches:
+      - master
+env:
+  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Set up Node
+        uses: actions/setup-node@v1
+      - name: Use Yarn Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/yarn
+          key: yarn-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          restore-keys: yarn-
+      - name: Yarn Install
+        run: yarn install
+        - name: Build
+        run: yarn build
+      - name: Deploy
+        run: firebase deploy --token "$FIREBASE_TOKEN"
