@@ -21,7 +21,7 @@ jobs:
           restore-keys: yarn-
       - name: Yarn Install
         run: yarn install
-        - name: Build
+      - name: Build
         run: yarn build
       - name: Deploy
         run: firebase deploy --token "$FIREBASE_TOKEN"
