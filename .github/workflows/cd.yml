@@ -7,7 +7,7 @@ env:
   FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
 jobs:
-  lint:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -24,4 +24,4 @@ jobs:
       - name: Build
         run: yarn build
       - name: Deploy
-        run: firebase deploy --token "$FIREBASE_TOKEN"
+        run: yarn firebase deploy --token "$FIREBASE_TOKEN"
