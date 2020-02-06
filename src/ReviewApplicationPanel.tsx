@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -38,24 +39,10 @@ export default (
           </Select>
         </FormControl>
         <span>of {content.length}.</span>
-        <Button
-          variant="outlined"
-          color="primary"
-          className={styles.Button}
-          disabled={candidateId === 0}
-          onClick={previous}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          className={styles.Button}
-          disabled={candidateId === content.length - 1}
-          onClick={next}
-        >
-          Next
-        </Button>
+        <ButtonGroup color="primary" className={styles.Button}>
+          <Button disabled={candidateId === 0} onClick={previous}>Previous</Button>
+          <Button disabled={candidateId === content.length - 1} onClick={next}>Next</Button>
+        </ButtonGroup>
         <SingleCandidateReviewer
           rating={ratings[candidateId] ?? null}
           onRatingChange={updatedRating => onRatingChange(candidateId, updatedRating)}
