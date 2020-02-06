@@ -47,7 +47,7 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
         <h3>My Rating Statistics</h3>
         <ol>
           {ratingStatistics(myRatings).map((count, id) => (
-            <li>{ratingsText[id]}: {count}</li>
+            <li key={ratingsText[id]}>{ratingsText[id]}: {count}</li>
           ))}
         </ol>
       </div>
@@ -55,14 +55,17 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
         <h3>Global Rating Statistics</h3>
         <ol>
           {votingStatistics(allVotes).map((count, id) => (
-            <li>{ratingsText[id]}: {count}</li>
+            <li key={ratingsText[id]}>{ratingsText[id]}: {count}</li>
           ))}
         </ol>
       </div>
       <div className={styles.Section}>
         <h3>My Ratings</h3>
         <ol>
-          {exportRatings(expectedNumber, myRatings).map(text => <li key={text}>{text}</li>)}
+          {exportRatings(expectedNumber, myRatings).map((text, id) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <li key={id}>{text}</li>
+          ))}
         </ol>
       </div>
       <div className={styles.Section}>
@@ -95,7 +98,10 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
               <div key={email} className={styles.Section}>
                 <h3>{`${displayName}'s Ratings}`}</h3>
                 <ol>
-                  {exportRatings(expectedNumber, ratings).map(text => <li key={text}>{text}</li>)}
+                  {exportRatings(expectedNumber, ratings).map((text, id) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <li key={id}>{text}</li>
+                  ))}
                 </ol>
               </div>
             );
