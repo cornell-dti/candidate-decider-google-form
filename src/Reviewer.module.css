@@ -1,0 +1,30 @@
+.ReviewPanels {
+  display: flex;
+  flex-direction: row;
+}
+
+.ReviewApplicationPanel {
+  flex: 1 1 auto;
+  border-right: 1px solid #ccc;
+}
+
+.ReviewSidePanel {
+  flex: 0 0 400px;
+}
+
+.Section {
+  margin: 1em;
+}
+
+.Header {
+  margin: 12px 0 !important;
+}
+
+.Button {
+  margin: 0 0.5em !important;
+}
+
+.AnswerText {
+  width: 100%;
+  word-wrap: break-word;
+}
