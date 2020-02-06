@@ -25,28 +25,32 @@ export default (
   return (
     <div className={className}>
       <div className={styles.Section}>
-        <span>Candicate ID: </span>
-        <FormControl>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={candidateId}
-            onChange={event => setCandidateId(event.currentTarget.value as number)}
-          >
-            {Array.from(Array(content.length).keys()).map((id) => (
-              <MenuItem key={id} value={id}>{id + 1}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <span>of {content.length}.</span>
-        <ButtonGroup color="primary" className={styles.Button}>
-          <Button disabled={candidateId === 0} onClick={previous}>Previous</Button>
-          <Button disabled={candidateId === content.length - 1} onClick={next}>Next</Button>
-        </ButtonGroup>
-        <SingleCandidateReviewer
-          rating={ratings[candidateId] ?? null}
-          onRatingChange={updatedRating => onRatingChange(candidateId, updatedRating)}
-        />
+        <div className={styles.Section}>
+          <span>Candicate ID: </span>
+          <FormControl>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={candidateId}
+              onChange={event => setCandidateId(event.currentTarget.value as number)}
+            >
+              {Array.from(Array(content.length).keys()).map((id) => (
+                <MenuItem key={id} value={id}>{id + 1}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <span>of {content.length}.</span>
+          <ButtonGroup color="primary" className={styles.Button}>
+            <Button disabled={candidateId === 0} onClick={previous}>Previous</Button>
+            <Button disabled={candidateId === content.length - 1} onClick={next}>Next</Button>
+          </ButtonGroup>
+        </div>
+        <div>
+          <SingleCandidateReviewer
+            rating={ratings[candidateId] ?? null}
+            onRatingChange={updatedRating => onRatingChange(candidateId, updatedRating)}
+          />
+        </div>
       </div>
       <div className={styles.Section}>
         <SingleCandidateViewer header={header} row={content[candidateId]} />
