@@ -1,5 +1,8 @@
 import React, { ReactElement, useState } from 'react';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { SheetData, Rating, Ratings } from './types';
 import SingleCandidateViewer from './SingleCandidateViewer';
 import SingleCandidateReviewer from './SingleCandidateReviewer';
@@ -21,7 +24,20 @@ export default (
   return (
     <div className={className}>
       <div className={styles.Section}>
-        <span>Candicate ID: {candidateId + 1}/{content.length}</span>
+        <span>Candicate ID: </span>
+        <FormControl>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={candidateId}
+            onChange={event => setCandidateId(event.currentTarget.value as number)}
+          >
+            {Array.from(Array(content.length).keys()).map((id) => (
+              <MenuItem key={id} value={id}>{id + 1}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <span>of {content.length}.</span>
         <Button
           variant="outlined"
           color="primary"
