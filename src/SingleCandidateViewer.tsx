@@ -16,8 +16,9 @@ const Answer = ({ answer }: { readonly answer: string }): ReactElement => {
   }
   return (
     <>
-      {normalized.split('\n').map((line, i) => (
-        <div key={i} className={styles.AnswerText}>{line}</div>
+      {normalized.split('\n').map((line, lineId) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={lineId} className={styles.AnswerText}>{line}</div>
       ))}
     </>
   )

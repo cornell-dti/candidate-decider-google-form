@@ -1,7 +1,7 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import { handleClientLoad, signIn, isSignedIn as checkIsSignedIn, SCOPES } from './gapi';
 import firebase from 'firebase/app';
+import { handleClientLoad, signIn, isSignedIn as checkIsSignedIn, SCOPES } from './gapi';
 import { toAppUser, cacheAppUser, hasUser } from './firebase-auth';
 
 type Props = {

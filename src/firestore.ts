@@ -8,9 +8,8 @@ export const listen = (spreadsheetId: string, onSnapshot: (votes: SheetVotes) =>
     .firestore()
     .collection(spreadsheetId)
     .onSnapshot(snapshot => {
-      const docs = snapshot.docs;
       const votes: { [email: string]: UserVote } = {};
-      docs.forEach(document => {
+      snapshot.docs.forEach(document => {
         const owner = document.id;
         const { displayName, ratings } = document.data() as UserVote;
         votes[owner] = { displayName, ratings };

@@ -16,6 +16,7 @@ const colors = [red[400], red[200], yellow[600], green[200], green[400]] as cons
 
 export default ({ rating, onRatingChange }: Props): ReactElement => {
   const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    // eslint-disable-next-line prefer-destructuring
     const value = event.currentTarget.value;
     if (value === '') {
       onRatingChange(null);
@@ -29,7 +30,7 @@ export default ({ rating, onRatingChange }: Props): ReactElement => {
         <RadioGroup row value={rating ?? ''} onChange={onChange}>
           {ratingsText.map((text, id) => (
             <FormControlLabel
-              key={id}
+              key={text}
               value={id + 1}
               control={<Radio style={{ color: colors[id] }} />}
               label={text}

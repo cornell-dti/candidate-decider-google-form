@@ -18,10 +18,10 @@ const Wrapper = ({ children }: { readonly children: ReactElement }): ReactElemen
         <Toolbar>
           <Typography variant="h6" color="inherit" style={{ flex: '1 1 auto' }}>
             Candidate Decider
-            </Typography>
+          </Typography>
           <Typography variant="h6" color="inherit">
             Welcome {getAppUser().displayName}!
-            </Typography>
+          </Typography>
         </Toolbar>
       </AppBar>
       {children}
@@ -59,7 +59,13 @@ export default () => {
   return (
     <Wrapper>
       <>
-        <button onClick={() => firebase.auth().signOut()}>Sign Out</button>
+        <button
+          type="button"
+          style={{ display: 'none' }}
+          onClick={() => firebase.auth().signOut()}
+        >
+          Sign Out
+        </button>
         {typeof sheetData === 'string'
           ? <div>{sheetData}</div>
           : <ReviewPanels spreadsheetId={searchParameters.spreadsheetId} sheetData={sheetData} />}

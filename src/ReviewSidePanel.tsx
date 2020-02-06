@@ -62,7 +62,7 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
       <div className={styles.Section}>
         <h3>My Ratings</h3>
         <ol>
-          {exportRatings(expectedNumber, myRatings).map((text, id) => <li key={id}>{text}</li>)}
+          {exportRatings(expectedNumber, myRatings).map(text => <li key={text}>{text}</li>)}
         </ol>
       </div>
       <div className={styles.Section}>
@@ -70,35 +70,38 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
           checked={showOthers}
           onChange={() => setShowOthers(prev => !prev)}
         />
-        <span>Show other people's votes</span>
+        <span>{'Show other people\'s votes'}</span>
       </div>
-      {showOthers && (<>
-        <div className={styles.Section}>
-          <h3>Per-person Ratings:</h3>
-          <ol>
-            {votingStatisticsPerPerson(expectedNumber, allVotes).map((statistics, id) => (
-              <li key={id}>
-                <div>{`${ratingsText[0]}: ${statistics[0]}`}</div>
-                <div>{`${ratingsText[1]}: ${statistics[1]}`}</div>
-                <div>{`${ratingsText[2]}: ${statistics[2]}`}</div>
-                <div>{`${ratingsText[3]}: ${statistics[3]}`}</div>
-                <div>{`${ratingsText[4]}: ${statistics[4]}`}</div>
-              </li>
-            ))}
-          </ol>
-        </div>
-        {Object.keys(otherVotes).map((email) => {
-          const { displayName, ratings } = otherVotes[email];
-          return (
-            <div key={email} className={styles.Section}>
-              <h3>{displayName}'s Ratings</h3>
-              <ol>
-                {exportRatings(expectedNumber, ratings).map((text, id) => <li key={id}>{text}</li>)}
-              </ol>
-            </div>
-          );
-        })}
-      </>)}
+      {showOthers && (
+        <>
+          <div className={styles.Section}>
+            <h3>Per-person Ratings:</h3>
+            <ol>
+              {votingStatisticsPerPerson(expectedNumber, allVotes).map((statistics, id) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <li key={id}>
+                  <div>{`${ratingsText[0]}: ${statistics[0]}`}</div>
+                  <div>{`${ratingsText[1]}: ${statistics[1]}`}</div>
+                  <div>{`${ratingsText[2]}: ${statistics[2]}`}</div>
+                  <div>{`${ratingsText[3]}: ${statistics[3]}`}</div>
+                  <div>{`${ratingsText[4]}: ${statistics[4]}`}</div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          {Object.keys(otherVotes).map((email) => {
+            const { displayName, ratings } = otherVotes[email];
+            return (
+              <div key={email} className={styles.Section}>
+                <h3>{`${displayName}'s Ratings}`}</h3>
+                <ol>
+                  {exportRatings(expectedNumber, ratings).map(text => <li key={text}>{text}</li>)}
+                </ol>
+              </div>
+            );
+          })}
+        </>
+      )}
     </div>
   );
 };

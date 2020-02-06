@@ -1,3 +1,5 @@
+// Unfortunate compromise to adapt to the global gapi library.
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { SheetData } from './types';
 
 // Client ID and API key from the Developer Console
@@ -21,6 +23,7 @@ async function initializeClient(onLoad: () => void) {
       scope: SCOPES
     });
   } catch (error) {
+    // eslint-disable-next-line no-alert
     alert(JSON.stringify(error, null, 2));
   }
   onLoad();
