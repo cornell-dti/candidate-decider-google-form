@@ -60,7 +60,8 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
   const myProgress = 100 * Object.keys(myRatings).length / expectedNumber;
   const globalProgress = 100
     * Object.values(allVotes).map(vote => Object.keys(vote.ratings).length).reduce((acc, c) => acc + c, 0)
-    / (Object.keys(allVotes).length * expectedNumber)
+    / (Object.keys(allVotes).length * expectedNumber);
+  const allVotingStatistics = votingStatisticsPerPerson(expectedNumber, allVotes);
   return (
     <div className={className}>
       <div className={styles.Section}>
@@ -86,34 +87,26 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
         <RatingStatisticsList statistics={votingStatistics(allVotes)} />
       </div>
       <div className={styles.Section}>
-        <h3>My Ratings</h3>
-        <ol>
-          {exportRatings(expectedNumber, myRatings).map((text, id) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <li key={id}>{text}</li>
-          ))}
-        </ol>
-      </div>
-      <div className={styles.Section}>
         <Switch
           checked={showOthers}
           onChange={() => setShowOthers(prev => !prev)}
         />
         <span>{'Show other people\'s votes'}</span>
       </div>
+      <div className={styles.Section}>
+        <h3>Per-person Ratings</h3>
+        <ol>
+          {exportRatings(expectedNumber, myRatings).map((text, id) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <li key={id}>
+              <div>{showOthers ? `My Rating: ${text}` : text}</div>
+              {showOthers && <RatingStatisticsList statistics={allVotingStatistics[id]} />}
+            </li>
+          ))}
+        </ol>
+      </div>
       {showOthers && (
         <>
-          <div className={styles.Section}>
-            <h3>Per-person Ratings:</h3>
-            <ol>
-              {votingStatisticsPerPerson(expectedNumber, allVotes).map((statistics, id) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <li key={id}>
-                  <RatingStatisticsList statistics={statistics} />
-                </li>
-              ))}
-            </ol>
-          </div>
           {Object.keys(otherVotes).map((email) => {
             const { displayName, ratings } = otherVotes[email];
             return (
