@@ -3,16 +3,13 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import { red, yellow, green } from '@material-ui/core/colors';
 import { Rating } from './types';
-import { ratingsText } from './ratings-util';
+import { ratingsText, ratingsColors } from './ratings-util';
 
 type Props = {
   readonly rating: Rating | null;
   readonly onRatingChange: (rating: Rating | null) => void;
 };
-
-const colors = [red[400], red[200], yellow[600], green[200], green[400]] as const;
 
 export default ({ rating, onRatingChange }: Props): ReactElement => {
   const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -32,7 +29,7 @@ export default ({ rating, onRatingChange }: Props): ReactElement => {
             <FormControlLabel
               key={text}
               value={id + 1}
-              control={<Radio style={{ color: colors[id] }} />}
+              control={<Radio style={{ color: ratingsColors[id] }} />}
               label={text}
               labelPlacement="top"
             />

@@ -1,6 +1,8 @@
+import { red, yellow, green } from '@material-ui/core/colors';
 import { Ratings, Rating, SheetVotes } from './types';
 
 export const ratingsText = ['No', 'Unlikely', 'Maybe', 'Strong Maybe', 'Yes'] as const;
+export const ratingsColors = [red[400], red[200], yellow[600], green[200], green[400]] as const;
 
 const orderedRatings = (expectedNumber: number, ratings: Ratings): readonly (Rating | null)[] => {
   const ordered: (Rating | null)[] = [];
@@ -15,7 +17,7 @@ export const exportRatings = (expectedNumber: number, ratings: Ratings): readonl
     rating === null ? '' : ratingsText[rating - 1]
   );
 
-type RatingStatistics = [number, number, number, number, number];
+export type RatingStatistics = [number, number, number, number, number];
 
 export const ratingStatistics = (ratings: Ratings): RatingStatistics => {
   const statistics = [0, 0, 0, 0, 0];
