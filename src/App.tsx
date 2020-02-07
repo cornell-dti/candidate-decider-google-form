@@ -47,6 +47,8 @@ export default () => {
       setSheetData('spreadsheetId and range must be in search parameters!');
       return () => {};
     }
+    getSheetData(searchParameters.spreadsheetId, searchParameters.range)
+      .then(data => setSheetData(data));
     const interval = setInterval(() => {
       getSheetData(searchParameters.spreadsheetId, searchParameters.range)
         .then(data => setSheetData(data));
