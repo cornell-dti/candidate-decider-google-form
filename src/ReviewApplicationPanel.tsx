@@ -32,7 +32,7 @@ export default (
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={candidateId}
-              onChange={event => setCandidateId(event.currentTarget.value as number)}
+              onChange={event => setCandidateId((event.target?.value ?? 0) as number)}
             >
               {Array.from(Array(content.length).keys()).map((id) => (
                 <MenuItem key={id} value={id}>{id + 1}</MenuItem>
