@@ -20,6 +20,22 @@
   margin: 12px 0 !important;
 }
 
+.PercentageContainer {
+  margin: 0.5em 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.PercentageContainerText {
+  margin: 4px 0;
+  flex: 0 0 150px;
+}
+
+.PercentageBar {
+  flex: 1 1 auto;
+}
+
 .Button {
   margin: 0 0.5em !important;
 }
