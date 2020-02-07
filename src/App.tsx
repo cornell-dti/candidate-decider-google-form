@@ -45,10 +45,13 @@ export default () => {
   useEffect(() => {
     if (searchParameters == null) {
       setSheetData('spreadsheetId and range must be in search parameters!');
-      return;
+      return () => {};
     }
-    getSheetData(searchParameters.spreadsheetId, searchParameters.range)
-      .then(data => setSheetData(data));
+    const interval = setInterval(() => {
+      getSheetData(searchParameters.spreadsheetId, searchParameters.range)
+        .then(data => setSheetData(data));
+    }, 10000);
+    return () => clearInterval(interval);
   }, []);
   if (searchParameters == null) {
     if (typeof sheetData !== 'string') {
