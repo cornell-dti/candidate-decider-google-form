@@ -118,7 +118,7 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
             const { displayName, ratings } = otherVotes[email];
             return (
               <div key={email} className={styles.Section}>
-                <h3>{`${displayName}'s Ratings}`}</h3>
+                <h3>{`${displayName}'s Ratings`}</h3>
                 <ol>
                   {exportRatings(expectedNumber, ratings).map((text, id) => (
                     // eslint-disable-next-line react/no-array-index-key
