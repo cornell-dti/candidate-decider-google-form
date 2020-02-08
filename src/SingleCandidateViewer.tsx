@@ -12,17 +12,23 @@ const Answer = ({ answer }: { readonly answer: string }): ReactElement => {
     return <code>No answer provided</code>;
   }
   if (normalized.startsWith('http')) {
-    return <a href={normalized} target="_blank" rel="noopener noreferrer">{normalized}</a>;
+    return (
+      <a href={normalized} target="_blank" rel="noopener noreferrer">
+        {normalized}
+      </a>
+    );
   }
   return (
     <>
       {normalized.split('\n').map((line, lineId) => (
         // eslint-disable-next-line react/no-array-index-key
-        <div key={lineId} className={styles.AnswerText}>{line}</div>
+        <div key={lineId} className={styles.AnswerText}>
+          {line}
+        </div>
       ))}
     </>
-  )
-}
+  );
+};
 
 export default ({ header, row }: Props): ReactElement => {
   const joinedData: [string, string][] = [];

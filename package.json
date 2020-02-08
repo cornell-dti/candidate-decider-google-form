@@ -24,6 +24,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .ts --ext .tsx",
+    "format": "prettier --write '**/*.{ts,tsx,css,html}'",
+    "format:check": "prettier --check '**/*.{ts,tsx,css,html}'",
     "deploy": "yarn build && firebase deploy"
   },
   "eslintConfig": {
@@ -56,6 +58,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.3.0",
-    "firebase-tools": "^7.12.1"
+    "firebase-tools": "^7.12.1",
+    "prettier": "^1.19.1"
   }
 }

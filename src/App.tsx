@@ -30,7 +30,10 @@ const Wrapper = ({ children }: { readonly children: ReactElement }): ReactElemen
 );
 
 const searchParameters = (() => {
-  const parameterList = window.location.search.substring(1).split('&').map(part => part.split('='));
+  const parameterList = window.location.search
+    .substring(1)
+    .split('&')
+    .map(part => part.split('='));
   const map = new Map(parameterList as [string, string][]);
   const spreadsheetId = map.get('spreadsheetId');
   const range = map.get('range');
@@ -47,11 +50,13 @@ export default () => {
       setSheetData('spreadsheetId and range must be in search parameters!');
       return () => {};
     }
-    getSheetData(searchParameters.spreadsheetId, searchParameters.range)
-      .then(data => setSheetData(data));
+    getSheetData(searchParameters.spreadsheetId, searchParameters.range).then(data =>
+      setSheetData(data)
+    );
     const interval = setInterval(() => {
-      getSheetData(searchParameters.spreadsheetId, searchParameters.range)
-        .then(data => setSheetData(data));
+      getSheetData(searchParameters.spreadsheetId, searchParameters.range).then(data =>
+        setSheetData(data)
+      );
     }, 10000);
     return () => clearInterval(interval);
   }, []);
@@ -59,21 +64,23 @@ export default () => {
     if (typeof sheetData !== 'string') {
       throw new Error();
     }
-    return <Wrapper><div>{sheetData}</div></Wrapper>;
+    return (
+      <Wrapper>
+        <div>{sheetData}</div>
+      </Wrapper>
+    );
   }
   return (
     <Wrapper>
       <>
-        <button
-          type="button"
-          style={{ display: 'none' }}
-          onClick={() => firebase.auth().signOut()}
-        >
+        <button type="button" style={{ display: 'none' }} onClick={() => firebase.auth().signOut()}>
           Sign Out
         </button>
-        {typeof sheetData === 'string'
-          ? <div>{sheetData}</div>
-          : <ReviewPanels spreadsheetId={searchParameters.spreadsheetId} sheetData={sheetData} />}
+        {typeof sheetData === 'string' ? (
+          <div>{sheetData}</div>
+        ) : (
+          <ReviewPanels spreadsheetId={searchParameters.spreadsheetId} sheetData={sheetData} />
+        )}
       </>
     </Wrapper>
   );
