@@ -18,9 +18,9 @@ export default ({ rating, onRatingChange }: Props): ReactElement => {
     if (value === '') {
       onRatingChange(null);
     } else {
-      onRatingChange(parseInt(value, 10) as Rating)
+      onRatingChange(parseInt(value, 10) as Rating);
     }
-  }
+  };
   return (
     <>
       <FormControl component="fieldset">

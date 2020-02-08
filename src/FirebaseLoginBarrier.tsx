@@ -13,7 +13,7 @@ const provider = new firebase.auth.GoogleAuthProvider().addScope(SCOPES);
 export default ({ signedInRenderer }: Props): ReactElement => {
   const [isSignedIn, setInSignedIn] = useState(hasUser());
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(async (firebaseUser) => {
+    firebase.auth().onAuthStateChanged(async firebaseUser => {
       const appUser = await toAppUser(firebaseUser);
       if (appUser != null) {
         cacheAppUser(appUser);
@@ -24,7 +24,7 @@ export default ({ signedInRenderer }: Props): ReactElement => {
           setInSignedIn(true);
         });
       }
-    })
+    });
   });
   if (isSignedIn) {
     return signedInRenderer();
