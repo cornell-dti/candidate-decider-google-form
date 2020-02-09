@@ -29,7 +29,7 @@ export default ({
     <div className={className}>
       <div className={styles.Section}>
         <div className={styles.Section}>
-          <span>Candicate ID: </span>
+          <span>Candidate ID: </span>
           <FormControl>
             <Select
               labelId="demo-simple-select-label"
