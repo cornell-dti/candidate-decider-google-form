@@ -59,3 +59,19 @@ export const votingStatisticsPerPerson = (
   }
   return statisticsList;
 };
+
+export const exportAsCsv = (expectedNumber: number, votes: SheetVotes): string => {
+  const lines = [
+    Object.values(votes)
+      .map(({ displayName }) => displayName)
+      .join(',')
+  ];
+  for (let i = 0; i < expectedNumber; i += 1) {
+    lines.push(
+      Object.values(votes)
+        .map(vote => ratingsText[vote.ratings[i] - 1])
+        .join(',')
+    );
+  }
+  return lines.join('\n');
+};
