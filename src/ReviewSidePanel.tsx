@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from 'react';
 import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { SheetVotes } from './types';
 import {
@@ -10,6 +11,7 @@ import {
   ratingStatistics,
   votingStatistics,
   votingStatisticsPerPerson,
+  exportAsCsv,
   RatingStatistics
 } from './ratings-util';
 import styles from './Reviewer.module.css';
@@ -51,6 +53,7 @@ type Props = {
 
 export default ({ expectedNumber, allVotes, className }: Props): ReactElement => {
   const [showOthers, setShowOthers] = useState(false);
+  const [showCSV, setShowCSV] = useState(false);
   const myEmail = getAppUser().email;
   const { [myEmail]: myVote, ...otherVotes } = allVotes;
   const { ratings: myRatings } = myVote ?? { ratings: {} };
@@ -64,6 +67,15 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
   const allVotingStatistics = votingStatisticsPerPerson(expectedNumber, allVotes);
   return (
     <div className={className}>
+      <div className={styles.Section}>
+        <h3>Export</h3>
+        <div>
+          <Button color="primary" onClick={() => setShowCSV(prev => !prev)}>
+            {showCSV ? 'Hide' : 'Show'} CSV
+          </Button>
+          <pre>{showCSV && exportAsCsv(expectedNumber, allVotes)}</pre>
+        </div>
+      </div>
       <div className={styles.Section}>
         <h3>My Progress</h3>
         <LinearProgress variant="determinate" value={myProgress} />
