@@ -14,7 +14,7 @@ const DISCOVERY_DOCS = ['https://sheets.googleapis.com/$discovery/rest?version=v
 export const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
 /** Initializes the API client library and sets up sign-in state listeners. */
-async function initializeClient(onLoad: () => void) {
+async function initializeClient() {
   try {
     await gapi.client.init({
       apiKey: API_KEY,
@@ -26,16 +26,15 @@ async function initializeClient(onLoad: () => void) {
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(error, null, 2));
   }
-  onLoad();
 }
 
-export const handleClientLoad = (onLoad: () => void): void =>
-  gapi.load('client:auth2', () => initializeClient(onLoad));
-
-// @ts-ignore
-export const signIn = (): Promise<void> => gapi.auth2.getAuthInstance().signIn();
-// @ts-ignore
-export const isSignedIn = (): boolean => gapi.auth2.getAuthInstance().isSignedIn.get();
+export const handleClientLoad = (accessToken: string, onLoad: () => void): void =>
+  gapi.load('client:auth2', async () => {
+    await initializeClient();
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    gapi.client.setToken({ access_token: accessToken });
+    onLoad();
+  });
 
 export const getSheetData = async (spreadsheetId: string, range: string): Promise<SheetData> => {
   // @ts-ignore
