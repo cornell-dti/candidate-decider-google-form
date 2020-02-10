@@ -2,48 +2,17 @@ import React, { ReactElement, useState } from 'react';
 import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
 import { SheetVotes } from './types';
 import {
   exportRatings,
-  ratingsText,
-  ratingsColors,
   ratingStatistics,
   votingStatistics,
   votingStatisticsPerPerson,
-  exportAsCsv,
-  RatingStatistics
+  exportAsCsv
 } from './ratings-util';
+import RatingStatisticsList from './RatingStatisticsList';
 import styles from './Reviewer.module.css';
-import { getAppUser } from './firebase-auth';
-
-type RatingStatisticsListProps = { readonly statistics: RatingStatistics };
-
-const colorLinearProgress = (backgroundColor: string) =>
-  withStyles({
-    colorPrimary: { backgroundColor: 'transparent' },
-    barColorPrimary: { backgroundColor }
-  })(LinearProgress);
-const colorLinearProgressList = ratingsColors.map(color => colorLinearProgress(color));
-
-const RatingStatisticsList = ({ statistics }: RatingStatisticsListProps): ReactElement => {
-  const totalCount = statistics[0] + statistics[1] + statistics[2] + statistics[3] + statistics[4];
-  return (
-    <div>
-      {statistics.map((count, id) => {
-        const key = id;
-        const value = (count / totalCount) * 100;
-        const Progress = colorLinearProgressList[id];
-        return (
-          <div key={key} className={styles.PercentageContainer}>
-            <div className={styles.PercentageContainerText}>{`${ratingsText[id]} (${count})`}</div>
-            <Progress variant="determinate" value={value} className={styles.PercentageBar} />
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+import { getAppUser } from './apis/firebase-auth';
 
 type Props = {
   readonly expectedNumber: number;

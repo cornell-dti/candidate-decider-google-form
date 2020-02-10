@@ -6,9 +6,9 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { SheetData } from './types';
-import { getSheetData } from './gapi';
+import { getSheetData } from './apis/gapi';
 import ReviewPanels from './ReviewPanels';
-import { getAppUser } from './firebase-auth';
+import { getAppUser } from './apis/firebase-auth';
 
 const theme = createMuiTheme();
 

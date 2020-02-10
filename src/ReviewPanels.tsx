@@ -1,10 +1,10 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import * as db from './firestore';
+import * as db from './apis/firestore';
 import { SheetData, Rating, Ratings, SheetVotes } from './types';
 import ReviewApplicationPanel from './ReviewApplicationPanel';
 import styles from './Reviewer.module.css';
 import ReviewSidePanel from './ReviewSidePanel';
-import { getAppUser } from './firebase-auth';
+import { getAppUser } from './apis/firebase-auth';
 
 type Props = { readonly spreadsheetId: string; readonly sheetData: SheetData };
 
