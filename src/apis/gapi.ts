@@ -1,6 +1,6 @@
 // Unfortunate compromise to adapt to the global gapi library.
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
-import { SheetData } from './types';
+import { SheetData } from '../types';
 
 // Client ID and API key from the Developer Console
 const CLIENT_ID = '81814583566-co2eovvgsl6kn1if48q9dtp8793m4qna.apps.googleusercontent.com';

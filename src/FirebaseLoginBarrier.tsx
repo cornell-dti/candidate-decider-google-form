@@ -1,8 +1,8 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import firebase from 'firebase/app';
-import { handleClientLoad, SCOPES } from './gapi';
-import { toAppUser, cacheAppUser } from './firebase-auth';
+import { handleClientLoad, SCOPES } from './apis/gapi';
+import { toAppUser, cacheAppUser } from './apis/firebase-auth';
 
 type Props = {
   readonly signedInRenderer: () => ReactElement;

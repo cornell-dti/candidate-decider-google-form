@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-import { UserVote, SheetVotes, Ratings } from './types';
+import { UserVote, SheetVotes, Ratings } from '../types';
 import { getAppUser } from './firebase-auth';
 
 export const listen = (spreadsheetId: string, onSnapshot: (votes: SheetVotes) => void): void => {
