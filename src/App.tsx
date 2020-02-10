@@ -2,6 +2,7 @@ import React, { ReactElement, useState, useEffect } from 'react';
 import firebase from 'firebase/app';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { SheetData } from './types';
@@ -22,6 +23,9 @@ const Wrapper = ({ children }: { readonly children: ReactElement }): ReactElemen
           <Typography variant="h6" color="inherit">
             Welcome {getAppUser().displayName}!
           </Typography>
+          <Button style={{ color: 'white' }} onClick={() => firebase.auth().signOut()}>
+            Sign Out
+          </Button>
         </Toolbar>
       </AppBar>
       {children}
@@ -43,22 +47,26 @@ const searchParameters = (() => {
   return { spreadsheetId: decodeURIComponent(spreadsheetId), range: decodeURIComponent(range) };
 })();
 
+const MISSING_PARAMETER_MESSAGE = 'spreadsheetId and range must be in search parameters!';
+const FAILED_SHEET_FETCH_MESSAGE =
+  'Failed to fetch sheet data due to potential auth failure. Try sign in again.';
+
 export default () => {
   const [sheetData, setSheetData] = useState<SheetData | string>('Loading SheetData...');
   useEffect(() => {
     if (searchParameters == null) {
-      setSheetData('spreadsheetId and range must be in search parameters!');
-      return () => {};
+      setSheetData(MISSING_PARAMETER_MESSAGE);
+      return;
     }
-    getSheetData(searchParameters.spreadsheetId, searchParameters.range).then(data =>
-      setSheetData(data)
-    );
-    const interval = setInterval(() => {
-      getSheetData(searchParameters.spreadsheetId, searchParameters.range).then(data =>
-        setSheetData(data)
-      );
-    }, 10000);
-    return () => clearInterval(interval);
+    const fetchAndSetSheetData = (): void => {
+      getSheetData(searchParameters.spreadsheetId, searchParameters.range).then(data => {
+        setSheetData(data ?? FAILED_SHEET_FETCH_MESSAGE);
+        setTimeout(() => {
+          fetchAndSetSheetData();
+        }, 10000);
+      });
+    };
+    fetchAndSetSheetData();
   }, []);
   if (searchParameters == null) {
     if (typeof sheetData !== 'string') {
@@ -70,18 +78,16 @@ export default () => {
       </Wrapper>
     );
   }
+  if (typeof sheetData === 'string') {
+    return (
+      <Wrapper>
+        <div>{sheetData}</div>
+      </Wrapper>
+    );
+  }
   return (
     <Wrapper>
-      <>
-        <button type="button" style={{ display: 'none' }} onClick={() => firebase.auth().signOut()}>
-          Sign Out
-        </button>
-        {typeof sheetData === 'string' ? (
-          <div>{sheetData}</div>
-        ) : (
-          <ReviewPanels spreadsheetId={searchParameters.spreadsheetId} sheetData={sheetData} />
-        )}
-      </>
+      <ReviewPanels spreadsheetId={searchParameters.spreadsheetId} sheetData={sheetData} />
     </Wrapper>
   );
 };
