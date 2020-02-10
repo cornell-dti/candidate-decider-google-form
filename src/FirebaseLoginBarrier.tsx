@@ -10,6 +10,29 @@ type Props = {
 
 const provider = new firebase.auth.GoogleAuthProvider().addScope(SCOPES);
 
+const getAccessToken = (): string | null => {
+  const token = localStorage.getItem('access-token');
+  if (token == null) {
+    return null;
+  }
+  const expireString = localStorage.getItem('access-token-expire');
+  if (expireString == null) {
+    return null;
+  }
+  const expireDate = new Date(parseInt(expireString, 10));
+  if (expireDate < new Date()) {
+    return null;
+  }
+  return token;
+};
+
+const cacheAccessToken = (token: string): void => {
+  const expireDate = new Date();
+  expireDate.setMinutes(expireDate.getMinutes() + 30);
+  localStorage.setItem('access-token', token);
+  localStorage.setItem('access-token-expire', String(expireDate.getTime()));
+};
+
 export default ({ signedInRenderer }: Props): ReactElement => {
   const [isSignedIn, setInSignedIn] = useState(false);
   useEffect(() => {
@@ -23,7 +46,13 @@ export default ({ signedInRenderer }: Props): ReactElement => {
         }
       }
     });
-  });
+    const accessToken = getAccessToken();
+    if (accessToken != null) {
+      handleClientLoad(accessToken, () => {
+        setInSignedIn(true);
+      });
+    }
+  }, []);
   if (isSignedIn) {
     return signedInRenderer();
   }
@@ -38,6 +67,7 @@ export default ({ signedInRenderer }: Props): ReactElement => {
         if (accessToken == null) {
           return;
         }
+        cacheAccessToken(accessToken);
         const appUser = toAppUser(result.user);
         if (appUser != null) {
           handleClientLoad(accessToken, () => {
