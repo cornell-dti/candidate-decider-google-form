@@ -17,10 +17,11 @@ import { getAppUser } from './apis/firebase-auth';
 type Props = {
   readonly expectedNumber: number;
   readonly allVotes: SheetVotes;
+  readonly candidateId: number;
   readonly className: string;
 };
 
-export default ({ expectedNumber, allVotes, className }: Props): ReactElement => {
+export default ({ expectedNumber, allVotes, candidateId, className }: Props): ReactElement => {
   const [showOthers, setShowOthers] = useState(false);
   const [showCSV, setShowCSV] = useState(false);
   const myEmail = getAppUser().email;
@@ -37,15 +38,6 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
   return (
     <div className={className}>
       <div className={styles.Section}>
-        <h3>Export</h3>
-        <div>
-          <Button color="primary" onClick={() => setShowCSV(prev => !prev)}>
-            {showCSV ? 'Hide' : 'Show'} CSV
-          </Button>
-          <pre>{showCSV && exportAsCsv(expectedNumber, allVotes)}</pre>
-        </div>
-      </div>
-      <div className={styles.Section}>
         <h3>My Progress</h3>
         <LinearProgress variant="determinate" value={myProgress} />
       </div>
@@ -54,6 +46,16 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
         <LinearProgress variant="determinate" value={globalProgress} />
       </div>
       <div className={styles.Section}>
+        <Switch checked={showOthers} onChange={() => setShowOthers(prev => !prev)} />
+        <span>Show other people&apos;s votes</span>
+      </div>
+      {showOthers && (
+        <div className={styles.Section}>
+          <h3>Candidate {candidateId + 1} Global Ratings</h3>
+          <RatingStatisticsList statistics={allVotingStatistics[candidateId]} />
+        </div>
+      )}
+      <div className={styles.Section}>
         <h3>My Rating Statistics</h3>
         <RatingStatisticsList statistics={ratingStatistics(myRatings)} />
       </div>
@@ -61,24 +63,18 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
         <h3>Global Rating Statistics</h3>
         <RatingStatisticsList statistics={votingStatistics(allVotes)} />
       </div>
-      <div className={styles.Section}>
-        <Switch checked={showOthers} onChange={() => setShowOthers(prev => !prev)} />
-        <span>Show other people&apos;s votes</span>
-      </div>
-      <div className={styles.Section}>
-        <h3>Per-person Ratings</h3>
-        <ol>
-          {exportRatings(expectedNumber, myRatings).map((text, id) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <li key={id}>
-              <div>{showOthers ? `My Rating: ${text}` : text}</div>
-              {showOthers && <RatingStatisticsList statistics={allVotingStatistics[id]} />}
-            </li>
-          ))}
-        </ol>
-      </div>
       {showOthers && (
         <>
+          <div className={styles.Section}>
+            <h3>Per-person Ratings</h3>
+            {exportRatings(expectedNumber, myRatings).map((text, id) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={id}>
+                <h4>Candidate {id + 1}:</h4>
+                <RatingStatisticsList statistics={allVotingStatistics[id]} />
+              </div>
+            ))}
+          </div>
           {Object.keys(otherVotes).map(email => {
             const { displayName, ratings } = otherVotes[email];
             return (
@@ -95,6 +91,15 @@ export default ({ expectedNumber, allVotes, className }: Props): ReactElement =>
           })}
         </>
       )}
+      <div className={styles.Section}>
+        <h3>Export</h3>
+        <div>
+          <Button color="primary" onClick={() => setShowCSV(prev => !prev)}>
+            {showCSV ? 'Hide' : 'Show'} CSV
+          </Button>
+          <pre>{showCSV && exportAsCsv(expectedNumber, allVotes)}</pre>
+        </div>
+      </div>
     </div>
   );
 };

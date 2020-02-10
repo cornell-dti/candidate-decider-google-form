@@ -11,6 +11,7 @@ type Props = { readonly spreadsheetId: string; readonly sheetData: SheetData };
 export default ({ spreadsheetId, sheetData }: Props): ReactElement => {
   const [ratings, setRatings] = useState<Ratings>({});
   const [allVotes, setAllVotes] = useState<SheetVotes>({});
+  const [candidateId, setCandidateId] = useState(0);
   useEffect(() => {
     db.listen(spreadsheetId, votes => {
       const myVote = votes[getAppUser().email]?.ratings ?? {};
@@ -18,7 +19,7 @@ export default ({ spreadsheetId, sheetData }: Props): ReactElement => {
       setAllVotes(votes);
     });
   }, [spreadsheetId]);
-  const onRatingChange = (candidateId: number, updatedRating: Rating | null): void => {
+  const onRatingChange = (updatedRating: Rating | null): void => {
     if (updatedRating === null) {
       const { [candidateId]: _, ...restRatings } = ratings;
       db.update(spreadsheetId, restRatings);
@@ -31,12 +32,15 @@ export default ({ spreadsheetId, sheetData }: Props): ReactElement => {
       <ReviewApplicationPanel
         sheetData={sheetData}
         ratings={ratings}
+        candidateId={candidateId}
+        updateCandidateId={setCandidateId}
         onRatingChange={onRatingChange}
         className={styles.ReviewApplicationPanel}
       />
       <ReviewSidePanel
         expectedNumber={sheetData.content.length}
         allVotes={allVotes}
+        candidateId={candidateId}
         className={styles.ReviewSidePanel}
       />
     </div>
