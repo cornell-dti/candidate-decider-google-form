@@ -22,7 +22,7 @@ export default ({ rating, onRatingChange }: Props): ReactElement => {
     }
   };
   return (
-    <>
+    <div>
       <FormControl component="fieldset">
         <RadioGroup row value={rating ?? ''} onChange={onChange}>
           {ratingsText.map((text, id) => (
@@ -42,6 +42,6 @@ export default ({ rating, onRatingChange }: Props): ReactElement => {
           />
         </RadioGroup>
       </FormControl>
-    </>
+    </div>
   );
 };
