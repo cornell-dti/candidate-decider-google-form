@@ -3,7 +3,8 @@ import * as db from './apis/firestore';
 import { SheetData, Rating, Ratings, SheetVotes } from './types';
 import ReviewApplicationPanel from './ReviewApplicationPanel';
 import styles from './Reviewer.module.css';
-import ReviewSidePanel from './ReviewSidePanel';
+import ReviewLocalSidePanel from './ReviewLocalSidePanel';
+import ReviewGlobalSidePanel from './ReviewGlobalSidePanel';
 import { votingStatisticsPerPerson } from './ratings-util';
 import { getAppUser } from './apis/firebase-auth';
 
@@ -41,11 +42,18 @@ export default ({ spreadsheetId, sheetData }: Props): ReactElement => {
         onRatingChange={onRatingChange}
         className={styles.ReviewApplicationPanel}
       />
-      <ReviewSidePanel
+      <ReviewLocalSidePanel
         expectedNumber={sheetData.content.length}
         allVotes={allVotes}
         allVotingStatistics={votingStatisticsPerPerson(sheetData.content.length, allVotes)}
         candidateId={candidateId}
+        showOthers={showOthers}
+        className={styles.ReviewSidePanel}
+      />
+      <ReviewGlobalSidePanel
+        expectedNumber={sheetData.content.length}
+        allVotes={allVotes}
+        allVotingStatistics={votingStatisticsPerPerson(sheetData.content.length, allVotes)}
         showOthers={showOthers}
         className={styles.ReviewSidePanel}
       />
