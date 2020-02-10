@@ -1,5 +1,4 @@
 import React, { ReactElement, useState } from 'react';
-import Switch from '@material-ui/core/Switch';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Button } from '@material-ui/core';
 import { SheetVotes } from './types';
@@ -7,8 +6,8 @@ import {
   exportRatings,
   ratingStatistics,
   votingStatistics,
-  votingStatisticsPerPerson,
-  exportAsCsv
+  exportAsCsv,
+  RatingStatistics
 } from './ratings-util';
 import RatingStatisticsList from './RatingStatisticsList';
 import styles from './Reviewer.module.css';
@@ -17,12 +16,20 @@ import { getAppUser } from './apis/firebase-auth';
 type Props = {
   readonly expectedNumber: number;
   readonly allVotes: SheetVotes;
+  readonly allVotingStatistics: readonly RatingStatistics[];
   readonly candidateId: number;
+  readonly showOthers: boolean;
   readonly className: string;
 };
 
-export default ({ expectedNumber, allVotes, candidateId, className }: Props): ReactElement => {
-  const [showOthers, setShowOthers] = useState(false);
+export default ({
+  expectedNumber,
+  allVotes,
+  allVotingStatistics,
+  candidateId,
+  showOthers,
+  className
+}: Props): ReactElement => {
   const [showCSV, setShowCSV] = useState(false);
   const myEmail = getAppUser().email;
   const { [myEmail]: myVote, ...otherVotes } = allVotes;
@@ -34,7 +41,6 @@ export default ({ expectedNumber, allVotes, candidateId, className }: Props): Re
         .map(vote => Object.keys(vote.ratings).length)
         .reduce((acc, c) => acc + c, 0)) /
     (Object.keys(allVotes).length * expectedNumber);
-  const allVotingStatistics = votingStatisticsPerPerson(expectedNumber, allVotes);
   return (
     <div className={className}>
       <div className={styles.Section}>
@@ -44,10 +50,6 @@ export default ({ expectedNumber, allVotes, candidateId, className }: Props): Re
       <div className={styles.Section}>
         <h3>Global Progress</h3>
         <LinearProgress variant="determinate" value={globalProgress} />
-      </div>
-      <div className={styles.Section}>
-        <Switch checked={showOthers} onChange={() => setShowOthers(prev => !prev)} />
-        <span>Show other people&apos;s votes</span>
       </div>
       {showOthers && (
         <div className={styles.Section}>

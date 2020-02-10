@@ -4,6 +4,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Switch from '@material-ui/core/Switch';
 import { SheetData, Rating, Ratings } from './types';
 import SingleCandidateViewer from './SingleCandidateViewer';
 import SingleCandidateReviewer from './SingleCandidateReviewer';
@@ -14,6 +15,8 @@ type Props = {
   readonly ratings: Ratings;
   readonly candidateId: number;
   readonly updateCandidateId: (updater: number | ((previous: number) => number)) => void;
+  readonly showOthers: boolean;
+  readonly onToggleShowOthers: () => void;
   readonly onRatingChange: (updatedRating: Rating | null) => void;
   readonly className: string;
 };
@@ -23,6 +26,8 @@ export default ({
   ratings,
   candidateId,
   updateCandidateId,
+  showOthers,
+  onToggleShowOthers,
   onRatingChange,
   className
 }: Props): ReactElement => {
@@ -56,6 +61,8 @@ export default ({
               Next
             </Button>
           </ButtonGroup>
+          <Switch checked={showOthers} onChange={onToggleShowOthers} />
+          <span>Show other people&apos;s votes</span>
         </div>
         <SingleCandidateReviewer
           rating={ratings[candidateId] ?? null}
