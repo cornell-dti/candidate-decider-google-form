@@ -4,32 +4,33 @@ import 'firebase/auth';
 export type AppUser = {
   readonly displayName: string;
   readonly email: string;
-  readonly token: string;
+  readonly idToken: string;
+  readonly accessToken: string;
 };
 
 /**
  * Returns the promise of an app user from the given raw firebase user.
  *
  * @param firebaseUser a raw firebase user or null.
+ * @param accessToken access token of the user.
  * @return the promise of an app user or null if there is no such user..
  */
-export async function toAppUser(firebaseUser: firebase.User | null): Promise<AppUser | null> {
-  if (firebaseUser == null) {
+export async function toAppUser(
+  firebaseUser: firebase.User | null,
+  accessToken: string | null
+): Promise<AppUser | null> {
+  if (firebaseUser == null || accessToken == null) {
     return null;
   }
   const { displayName, email } = firebaseUser;
   if (typeof displayName !== 'string' || typeof email !== 'string') {
     throw new Error('Bad user!');
   }
-  const token: string = await firebaseUser.getIdToken(true);
-  return { displayName, email, token };
+  const idToken: string = await firebaseUser.getIdToken(true);
+  return { displayName, email, idToken, accessToken };
 }
 
 let appUser: AppUser | null = null;
-
-firebase.auth().onAuthStateChanged(async user => {
-  appUser = await toAppUser(user);
-});
 
 export const hasUser = (): boolean => appUser != null;
 
