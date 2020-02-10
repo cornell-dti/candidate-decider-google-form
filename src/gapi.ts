@@ -36,9 +36,18 @@ export const handleClientLoad = (accessToken: string, onLoad: () => void): void 
     onLoad();
   });
 
-export const getSheetData = async (spreadsheetId: string, range: string): Promise<SheetData> => {
-  // @ts-ignore
-  const response = await gapi.client.sheets.spreadsheets.values.get({ spreadsheetId, range });
+export const getSheetData = async (
+  spreadsheetId: string,
+  range: string
+): Promise<SheetData | null> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let response: any;
+  try {
+    // @ts-ignore
+    response = await gapi.client.sheets.spreadsheets.values.get({ spreadsheetId, range });
+  } catch (error) {
+    return null;
+  }
   const table: readonly string[][] = response.result.values;
   const header = table[0];
   const content = table.slice(1);

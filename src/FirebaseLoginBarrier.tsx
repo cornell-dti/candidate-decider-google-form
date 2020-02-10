@@ -2,7 +2,7 @@ import React, { ReactElement, useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import firebase from 'firebase/app';
 import { handleClientLoad, SCOPES } from './gapi';
-import { toAppUser, cacheAppUser, hasUser } from './firebase-auth';
+import { toAppUser, cacheAppUser } from './firebase-auth';
 
 type Props = {
   readonly signedInRenderer: () => ReactElement;
@@ -11,11 +11,16 @@ type Props = {
 const provider = new firebase.auth.GoogleAuthProvider().addScope(SCOPES);
 
 export default ({ signedInRenderer }: Props): ReactElement => {
-  const [isSignedIn, setInSignedIn] = useState(hasUser());
+  const [isSignedIn, setInSignedIn] = useState(false);
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(firebaseUser => {
+    firebase.auth().onAuthStateChanged(async firebaseUser => {
       if (firebaseUser == null) {
         setInSignedIn(false);
+      } else {
+        const appUser = toAppUser(firebaseUser);
+        if (appUser != null) {
+          cacheAppUser(appUser);
+        }
       }
     });
   });
@@ -30,10 +35,12 @@ export default ({ signedInRenderer }: Props): ReactElement => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         const accessToken: string | null = result.credential?.accessToken ?? null;
-        const appUser = await toAppUser(result.user, accessToken);
+        if (accessToken == null) {
+          return;
+        }
+        const appUser = toAppUser(result.user);
         if (appUser != null) {
-          cacheAppUser(appUser);
-          handleClientLoad(appUser.accessToken, () => {
+          handleClientLoad(accessToken, () => {
             setInSignedIn(true);
           });
         }
