@@ -87,7 +87,11 @@ export default () => {
   }
   return (
     <Wrapper>
-      <ReviewPanels spreadsheetId={searchParameters.spreadsheetId} sheetData={sheetData} />
+      <ReviewPanels
+        spreadsheetId={searchParameters.spreadsheetId}
+        range={searchParameters.range}
+        sheetData={sheetData}
+      />
     </Wrapper>
   );
 };
