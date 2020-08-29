@@ -8,20 +8,24 @@ import ReviewGlobalSidePanel from './ReviewGlobalSidePanel';
 import { votingStatisticsPerPerson } from './ratings-util';
 import { getAppUser } from './apis/firebase-auth';
 
-type Props = { readonly spreadsheetId: string; readonly sheetData: SheetData };
+type Props = {
+  readonly spreadsheetId: string;
+  readonly range: string;
+  readonly sheetData: SheetData;
+};
 
-export default ({ spreadsheetId, sheetData }: Props): ReactElement => {
+export default ({ spreadsheetId, range, sheetData }: Props): ReactElement => {
   const [ratings, setRatings] = useState<Ratings>({});
   const [allVotes, setAllVotes] = useState<SheetVotes>({});
   const [candidateId, setCandidateId] = useState(0);
   const [showOthers, setShowOthers] = useState(false);
   useEffect(() => {
-    db.listen(spreadsheetId, votes => {
+    db.listen(`${spreadsheetId}_____${range}`, votes => {
       const myVote = votes[getAppUser().email]?.ratings ?? {};
       setRatings(myVote);
       setAllVotes(votes);
     });
-  }, [spreadsheetId]);
+  }, [spreadsheetId, range]);
   const onRatingChange = (updatedRating: Rating | null): void => {
     if (updatedRating === null) {
       const { [candidateId]: _, ...restRatings } = ratings;
