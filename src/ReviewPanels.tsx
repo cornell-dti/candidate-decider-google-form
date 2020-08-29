@@ -29,9 +29,9 @@ export default ({ spreadsheetId, range, sheetData }: Props): ReactElement => {
   const onRatingChange = (updatedRating: Rating | null): void => {
     if (updatedRating === null) {
       const { [candidateId]: _, ...restRatings } = ratings;
-      db.update(spreadsheetId, restRatings);
+      db.update(`${spreadsheetId}_____${range}`, restRatings);
     } else {
-      db.update(spreadsheetId, { ...ratings, [candidateId]: updatedRating });
+      db.update(`${spreadsheetId}_____${range}`, { ...ratings, [candidateId]: updatedRating });
     }
   };
   return (
