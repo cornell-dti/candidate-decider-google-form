@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
-import { SheetData, Rating, Ratings } from './types';
+import { SheetData, Rating, Ratings, Comments } from './types';
 import SingleCandidateViewer from './SingleCandidateViewer';
 import SingleCandidateReviewer from './SingleCandidateReviewer';
 import styles from './Reviewer.module.css';
@@ -13,22 +13,26 @@ import styles from './Reviewer.module.css';
 type Props = {
   readonly sheetData: SheetData;
   readonly ratings: Ratings;
+  readonly comments: Comments;
   readonly candidateId: number;
   readonly updateCandidateId: (updater: number | ((previous: number) => number)) => void;
   readonly showOthers: boolean;
   readonly onToggleShowOthers: () => void;
   readonly onRatingChange: (updatedRating: Rating | null) => void;
+  readonly onCommentChange: (comment: string) => void;
   readonly className: string;
 };
 
 const ReviewApplicationPanel = ({
   sheetData: { header, content },
   ratings,
+  comments,
   candidateId,
   updateCandidateId,
   showOthers,
   onToggleShowOthers,
   onRatingChange,
+  onCommentChange,
   className
 }: Props): ReactElement => {
   const previous = () => updateCandidateId(id => id - 1);
@@ -65,8 +69,11 @@ const ReviewApplicationPanel = ({
           <span>Show other people&apos;s votes</span>
         </div>
         <SingleCandidateReviewer
+          candidateId={candidateId}
           rating={ratings[candidateId] ?? null}
+          comment={comments[candidateId] ?? ''}
           onRatingChange={updatedRating => onRatingChange(updatedRating)}
+          onCommentChange={updatedComment => onCommentChange(updatedComment)}
         />
       </div>
       <div className={styles.Section}>
