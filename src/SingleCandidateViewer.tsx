@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactChild } from 'react';
 import styles from './Reviewer.module.css';
 
 type Props = {
@@ -6,24 +6,39 @@ type Props = {
   readonly row: readonly string[];
 };
 
+const formatURLFromLine = (line: string): readonly ReactChild[] | ReactChild => {
+  const matches = line.match(/https?:\/\/[^\s]+/);
+  if (matches == null) {
+    return line;
+  }
+  let remainingLine = line;
+  const segments: ReactChild[] = [];
+  matches.forEach((oneMatch, index) => {
+    const [start, remaining] = remainingLine.split(oneMatch, 2);
+    segments.push(
+      // eslint-disable-next-line react/no-array-index-key
+      <span key={index * 2}>{start}</span>,
+      // eslint-disable-next-line react/no-array-index-key
+      <a key={index * 2 + 1} href={oneMatch} target="_blank" rel="noopener noreferrer">
+        {oneMatch}
+      </a>
+    );
+    remainingLine = remaining;
+  });
+  return segments;
+};
+
 const Answer = ({ answer }: { readonly answer: string }): ReactElement => {
   const normalized = answer?.trim() ?? '';
   if (!normalized) {
     return <code>No answer provided</code>;
-  }
-  if (normalized.startsWith('http')) {
-    return (
-      <a href={normalized} target="_blank" rel="noopener noreferrer">
-        {normalized}
-      </a>
-    );
   }
   return (
     <>
       {normalized.split('\n').map((line, lineId) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={lineId} className={styles.AnswerText}>
-          {line}
+          {formatURLFromLine(line)}
         </div>
       ))}
     </>
