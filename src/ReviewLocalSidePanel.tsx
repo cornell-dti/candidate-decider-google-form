@@ -24,7 +24,7 @@ const ReviewLocalSidePanel = ({
   className
 }: Props): ReactElement => {
   const myEmail = getAppUser().email;
-  const { [myEmail]: myVote, ...otherVotes } = allVotes;
+  const { [myEmail]: myVote } = allVotes;
   const { ratings: myRatings } = myVote ?? { ratings: {} };
   const myProgress = (100 * Object.keys(myRatings).length) / expectedNumber;
   return (
@@ -46,18 +46,35 @@ const ReviewLocalSidePanel = ({
       {showOthers && (
         <div className={styles.Section}>
           <h3>All Votes on Candidate {candidateId + 1}</h3>
-          {Object.keys(otherVotes).map(email => {
-            const { displayName, ratings } = otherVotes[email];
-            const rating = ratings[candidateId];
-            if (rating == null) {
-              return null;
-            }
-            return (
-              <div key={email} className={styles.Section}>
-                {`${displayName}: ${ratingsText[rating - 1]}`}
-              </div>
-            );
-          })}
+          <div>
+            {Object.keys(allVotes).map(email => {
+              const { displayName, ratings } = allVotes[email];
+              const rating = ratings[candidateId];
+              if (rating == null) {
+                return null;
+              }
+              return (
+                <div key={email} className={styles.Section}>
+                  {`${displayName}: ${ratingsText[rating - 1]}`}
+                </div>
+              );
+            })}
+          </div>
+          <h3>All Comments on Candidate {candidateId + 1}</h3>
+          <div>
+            {Object.keys(allVotes).map(email => {
+              const { displayName, comments } = allVotes[email];
+              const comment = comments[candidateId];
+              if (comment == null) {
+                return null;
+              }
+              return (
+                <div key={email} className={styles.Section}>
+                  {`${displayName}: ${comment}`}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
