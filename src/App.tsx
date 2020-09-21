@@ -49,9 +49,9 @@ const searchParameters = (() => {
 
 const MISSING_PARAMETER_MESSAGE = 'spreadsheetId and range must be in search parameters!';
 const FAILED_SHEET_FETCH_MESSAGE =
-  'Failed to fetch sheet data due to potential auth failure. Try sign in again.';
+  "Failed to fetch sheet data due to potential auth failure. Maybe you are not granted the sheet's read permission.";
 
-export default () => {
+const App = () => {
   const [sheetData, setSheetData] = useState<SheetData | string>('Loading SheetData...');
   useEffect(() => {
     if (searchParameters == null) {
@@ -61,9 +61,7 @@ export default () => {
     const fetchAndSetSheetData = (): void => {
       getSheetData(searchParameters.spreadsheetId, searchParameters.range).then(data => {
         setSheetData(data ?? FAILED_SHEET_FETCH_MESSAGE);
-        setTimeout(() => {
-          fetchAndSetSheetData();
-        }, 10000);
+        setTimeout(() => fetchAndSetSheetData(), 10000);
       });
     };
     fetchAndSetSheetData();
@@ -95,3 +93,5 @@ export default () => {
     </Wrapper>
   );
 };
+
+export default App;
