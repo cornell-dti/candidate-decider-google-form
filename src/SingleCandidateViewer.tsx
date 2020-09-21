@@ -30,7 +30,7 @@ const Answer = ({ answer }: { readonly answer: string }): ReactElement => {
   );
 };
 
-export default ({ header, row }: Props): ReactElement => {
+const SingleCandidateViewer = ({ header, row }: Props): ReactElement => {
   const joinedData: [string, string][] = [];
   for (let i = 0; i < header.length; i += 1) {
     joinedData.push([header[i], row[i]]);
@@ -46,3 +46,5 @@ export default ({ header, row }: Props): ReactElement => {
     </div>
   );
 };
+
+export default SingleCandidateViewer;

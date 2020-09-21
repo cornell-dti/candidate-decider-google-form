@@ -33,7 +33,7 @@ const cacheAccessToken = (token: string): void => {
   localStorage.setItem('access-token-expire', String(expireDate.getTime()));
 };
 
-export default ({ signedInRenderer }: Props): ReactElement => {
+const FirebaseLoginBarrier = ({ signedInRenderer }: Props): ReactElement => {
   const [isSignedIn, setInSignedIn] = useState(false);
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async firebaseUser => {
@@ -86,3 +86,5 @@ export default ({ signedInRenderer }: Props): ReactElement => {
     </Button>
   );
 };
+
+export default FirebaseLoginBarrier;

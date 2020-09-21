@@ -11,7 +11,7 @@ type Props = {
   readonly onRatingChange: (rating: Rating | null) => void;
 };
 
-export default ({ rating, onRatingChange }: Props): ReactElement => {
+const SingleCandidateReviewer = ({ rating, onRatingChange }: Props): ReactElement => {
   const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     // eslint-disable-next-line prefer-destructuring
     const value = event.currentTarget.value;
@@ -45,3 +45,5 @@ export default ({ rating, onRatingChange }: Props): ReactElement => {
     </div>
   );
 };
+
+export default SingleCandidateReviewer;

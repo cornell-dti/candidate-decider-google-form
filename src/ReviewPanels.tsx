@@ -14,7 +14,7 @@ type Props = {
   readonly sheetData: SheetData;
 };
 
-export default ({ spreadsheetId, range, sheetData }: Props): ReactElement => {
+const ReviewPanels = ({ spreadsheetId, range, sheetData }: Props): ReactElement => {
   const [ratings, setRatings] = useState<Ratings>({});
   const [allVotes, setAllVotes] = useState<SheetVotes>({});
   const [candidateId, setCandidateId] = useState(0);
@@ -64,3 +64,5 @@ export default ({ spreadsheetId, range, sheetData }: Props): ReactElement => {
     </div>
   );
 };
+
+export default ReviewPanels;

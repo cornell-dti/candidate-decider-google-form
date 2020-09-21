@@ -15,7 +15,7 @@ type Props = {
   readonly className: string;
 };
 
-export default ({
+const ReviewGlobalSidePanel = ({
   expectedNumber,
   allVotes,
   allVotingStatistics,
@@ -68,3 +68,5 @@ export default ({
     </div>
   );
 };
+
+export default ReviewGlobalSidePanel;
