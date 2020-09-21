@@ -13,7 +13,7 @@ const colorLinearProgress = (backgroundColor: string) =>
   })(LinearProgress);
 const colorLinearProgressList = ratingsColors.map(color => colorLinearProgress(color));
 
-export default ({ statistics }: Props): ReactElement => {
+const RatingStatisticsList = ({ statistics }: Props): ReactElement => {
   const totalCount = statistics[0] + statistics[1] + statistics[2] + statistics[3] + statistics[4];
   return (
     <div>
@@ -31,3 +31,5 @@ export default ({ statistics }: Props): ReactElement => {
     </div>
   );
 };
+
+export default RatingStatisticsList;

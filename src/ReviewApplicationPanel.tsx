@@ -21,7 +21,7 @@ type Props = {
   readonly className: string;
 };
 
-export default ({
+const ReviewApplicationPanel = ({
   sheetData: { header, content },
   ratings,
   candidateId,
@@ -75,3 +75,5 @@ export default ({
     </div>
   );
 };
+
+export default ReviewApplicationPanel;

@@ -15,7 +15,7 @@ type Props = {
   readonly className: string;
 };
 
-export default ({
+const ReviewLocalSidePanel = ({
   expectedNumber,
   allVotes,
   allVotingStatistics,
@@ -63,3 +63,5 @@ export default ({
     </div>
   );
 };
+
+export default ReviewLocalSidePanel;
