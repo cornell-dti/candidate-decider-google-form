@@ -7,6 +7,8 @@ Decide which candidate to interview with data from Google Form.
 Visit `https://candidate-decider-form.firebaseapp.com/?spreadsheetId=[your id]&range=[your range]`,
 where range has syntax `[Sheet name]![start cell]:[end cell]`. (e.g. `Sheet1!A1:S1000`)
 
+You need to give all reviewers at least READ permission to the spreadsheet.
+
 ## Architecture
 
 This web app uses serverless Firebase. It uses Google Sheets API to fetch data from the Google
