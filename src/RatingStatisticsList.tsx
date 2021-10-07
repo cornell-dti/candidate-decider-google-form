@@ -1,6 +1,6 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import styles from './Reviewer.module.css';
 import { ratingsText, ratingsColors, RatingStatistics } from './ratings-util';
@@ -14,7 +14,7 @@ const colorLinearProgress = (backgroundColor: string) =>
   })(LinearProgress);
 const colorLinearProgressList = ratingsColors.map((color) => colorLinearProgress(color));
 
-const RatingStatisticsList = ({ statistics }: Props): ReactElement => {
+export default function RatingStatisticsList({ statistics }: Props): JSX.Element {
   const totalCount = statistics[0] + statistics[1] + statistics[2] + statistics[3] + statistics[4];
   return (
     <div>
@@ -31,6 +31,4 @@ const RatingStatisticsList = ({ statistics }: Props): ReactElement => {
       })}
     </div>
   );
-};
-
-export default RatingStatisticsList;
+}

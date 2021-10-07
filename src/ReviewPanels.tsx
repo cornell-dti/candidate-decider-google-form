@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ReviewApplicationPanel from './ReviewApplicationPanel';
 import ReviewGlobalSidePanel from './ReviewGlobalSidePanel';
@@ -15,7 +15,7 @@ type Props = {
   readonly sheetData: SheetData;
 };
 
-const ReviewPanels = ({ spreadsheetId, range, sheetData }: Props): ReactElement => {
+export default function ReviewPanels({ spreadsheetId, range, sheetData }: Props): JSX.Element {
   const [ratings, setRatings] = useState<Ratings>({});
   const [comments, setComments] = useState<Comments>({});
   const [allVotes, setAllVotes] = useState<SheetVotes>({});
@@ -77,6 +77,4 @@ const ReviewPanels = ({ spreadsheetId, range, sheetData }: Props): ReactElement 
       />
     </div>
   );
-};
-
-export default ReviewPanels;
+}

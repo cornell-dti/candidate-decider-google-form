@@ -12,8 +12,31 @@ const DISCOVERY_DOCS = ['https://sheets.googleapis.com/$discovery/rest?version=v
 // included, separated by spaces.
 export const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
+let googleAPILoaded = false;
+
+// Convert Google API script loading into a promise for later usage.
+// Google please try harder to make it more friendly to modern tooling :(
+const dynamicallyLoadGoogleAPIScriptPromise = new Promise<void>((resolve) => {
+  const script = document.createElement('script');
+  script.src = 'https://apis.google.com/js/api.js';
+  script.async = true;
+  script.defer = true;
+  script.onload = () => {
+    googleAPILoaded = true;
+    resolve();
+  };
+
+  document.body.appendChild(script);
+});
+
+function initializeGoogleAPI(): Promise<void> {
+  if (googleAPILoaded) return Promise.resolve();
+  return dynamicallyLoadGoogleAPIScriptPromise;
+}
+
 /** Initializes the API client library and sets up sign-in state listeners. */
 async function initializeClient() {
+  await initializeGoogleAPI();
   try {
     await gapi.client.init({
       apiKey: API_KEY,
@@ -27,12 +50,16 @@ async function initializeClient() {
   }
 }
 
-export const handleClientLoad = (accessToken: string, onLoad: () => void): void =>
-  gapi.load('client:auth2', async () => {
-    await initializeClient();
-    gapi.client.setToken({ access_token: accessToken });
-    onLoad();
-  });
+export function handleClientLoad(accessToken: string, onLoad: () => void): void {
+  // Before we reach any code that contains `gapi`, we must initialize it first.
+  initializeGoogleAPI().then(() =>
+    gapi.load('client:auth2', async () => {
+      await initializeClient();
+      gapi.client.setToken({ access_token: accessToken });
+      onLoad();
+    })
+  );
+}
 
 export const getSheetData = async (
   spreadsheetId: string,

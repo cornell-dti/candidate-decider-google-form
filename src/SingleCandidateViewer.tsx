@@ -1,13 +1,10 @@
-import React, { ReactElement, ReactChild } from 'react';
+import React, { ReactChild } from 'react';
 
 import styles from './Reviewer.module.css';
 
-type Props = {
-  readonly header: readonly string[];
-  readonly row: readonly string[];
-};
+type Props = { readonly header: readonly string[]; readonly row: readonly string[] };
 
-const formatURLFromLine = (line: string): readonly ReactChild[] | ReactChild => {
+function formatURLFromLine(line: string): readonly ReactChild[] | ReactChild {
   const matches = line.match(/https?:\/\/[^\s]+/);
   if (matches == null) {
     return line;
@@ -27,9 +24,9 @@ const formatURLFromLine = (line: string): readonly ReactChild[] | ReactChild => 
     remainingLine = remaining;
   });
   return segments;
-};
+}
 
-const Answer = ({ answer }: { readonly answer: string }): ReactElement => {
+function Answer({ answer }: { readonly answer: string }): JSX.Element {
   const normalized = answer?.trim() ?? '';
   if (!normalized) {
     return <code>No answer provided</code>;
@@ -44,9 +41,9 @@ const Answer = ({ answer }: { readonly answer: string }): ReactElement => {
       ))}
     </>
   );
-};
+}
 
-const SingleCandidateViewer = ({ header, row }: Props): ReactElement => {
+export default function SingleCandidateViewer({ header, row }: Props): JSX.Element {
   const joinedData: [string, string][] = [];
   for (let i = 0; i < header.length; i += 1) {
     joinedData.push([header[i], row[i]]);
@@ -61,6 +58,4 @@ const SingleCandidateViewer = ({ header, row }: Props): ReactElement => {
       ))}
     </div>
   );
-};
-
-export default SingleCandidateViewer;
+}

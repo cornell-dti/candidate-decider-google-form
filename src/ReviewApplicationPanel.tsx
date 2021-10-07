@@ -4,7 +4,7 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import styles from './Reviewer.module.css';
 import SingleCandidateReviewer from './SingleCandidateReviewer';
@@ -24,7 +24,7 @@ type Props = {
   readonly className: string;
 };
 
-const ReviewApplicationPanel = ({
+export default function ReviewApplicationPanel({
   sheetData: { header, content },
   ratings,
   comments,
@@ -35,7 +35,7 @@ const ReviewApplicationPanel = ({
   onRatingChange,
   onCommentChange,
   className,
-}: Props): ReactElement => {
+}: Props): JSX.Element {
   const previous = () => updateCandidateId((id) => id - 1);
   const next = () => updateCandidateId((id) => id + 1);
   return (
@@ -82,6 +82,4 @@ const ReviewApplicationPanel = ({
       </div>
     </div>
   );
-};
-
-export default ReviewApplicationPanel;
+}
