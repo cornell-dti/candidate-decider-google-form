@@ -1,5 +1,5 @@
 import LinearProgress from '@material-ui/core/LinearProgress';
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import RatingStatisticsList from './RatingStatisticsList';
 import styles from './Reviewer.module.css';
@@ -16,14 +16,14 @@ type Props = {
   readonly className: string;
 };
 
-const ReviewLocalSidePanel = ({
+export default function ReviewLocalSidePanel({
   expectedNumber,
   allVotes,
   allVotingStatistics,
   candidateId,
   showOthers,
   className,
-}: Props): ReactElement => {
+}: Props): JSX.Element {
   const myEmail = getAppUser().email;
   const { [myEmail]: myVote } = allVotes;
   const { ratings: myRatings } = myVote ?? { ratings: {} };
@@ -80,6 +80,4 @@ const ReviewLocalSidePanel = ({
       )}
     </div>
   );
-};
-
-export default ReviewLocalSidePanel;
+}

@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import firebase from 'firebase/app';
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ReviewPanels from './ReviewPanels';
 import { getAppUser } from './apis/firebase-auth';
@@ -13,7 +13,7 @@ import { SheetData } from './types';
 
 const theme = createTheme();
 
-const Wrapper = ({ children }: { readonly children: ReactElement }): ReactElement => (
+const Wrapper = ({ children }: { readonly children: JSX.Element }): JSX.Element => (
   <MuiThemeProvider theme={theme}>
     <div>
       <AppBar position="static">

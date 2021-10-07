@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 
 import RatingStatisticsList from './RatingStatisticsList';
 import styles from './Reviewer.module.css';
@@ -16,13 +16,13 @@ type Props = {
   readonly className: string;
 };
 
-const ReviewGlobalSidePanel = ({
+export default function ReviewGlobalSidePanel({
   expectedNumber,
   allVotes,
   allVotingStatistics,
   showOthers,
   className,
-}: Props): ReactElement => {
+}: Props): JSX.Element {
   const [showCSV, setShowCSV] = useState(false);
   const myEmail = getAppUser().email;
   const { [myEmail]: myVote } = allVotes;
@@ -68,6 +68,4 @@ const ReviewGlobalSidePanel = ({
       </div>
     </div>
   );
-};
-
-export default ReviewGlobalSidePanel;
+}

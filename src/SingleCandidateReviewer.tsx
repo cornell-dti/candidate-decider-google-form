@@ -4,7 +4,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import TextField from '@material-ui/core/TextField';
-import React, { ReactElement, ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import styles from './SingleCandidateReviewer.module.css';
 import { ratingsText, ratingsColors } from './ratings-util';
@@ -15,7 +15,7 @@ type CommentEditorProps = {
   readonly onCommentChange: (comment: string) => void;
 };
 
-const CommentEditor = ({ comment, onCommentChange }: CommentEditorProps): ReactElement => {
+function CommentEditor({ comment, onCommentChange }: CommentEditorProps): JSX.Element {
   const [currentComment, setCurrentComment] = useState(comment);
 
   return (
@@ -31,7 +31,7 @@ const CommentEditor = ({ comment, onCommentChange }: CommentEditorProps): ReactE
       </Button>
     </div>
   );
-};
+}
 
 type Props = {
   readonly candidateId: number;
@@ -41,13 +41,13 @@ type Props = {
   readonly onCommentChange: (comment: string) => void;
 };
 
-const SingleCandidateReviewer = ({
+export default function SingleCandidateReviewer({
   candidateId,
   rating,
   comment,
   onRatingChange,
   onCommentChange,
-}: Props): ReactElement => {
+}: Props): JSX.Element {
   const onRatingRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
     // eslint-disable-next-line prefer-destructuring
     const value = event.currentTarget.value;
@@ -81,6 +81,4 @@ const SingleCandidateReviewer = ({
       </FormControl>
     </div>
   );
-};
-
-export default SingleCandidateReviewer;
+}

@@ -1,40 +1,32 @@
 import Button from '@material-ui/core/Button';
 import firebase from 'firebase/app';
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { toAppUser, cacheAppUser } from './apis/firebase-auth';
 import { handleClientLoad, SCOPES } from './apis/gapi';
 
-type Props = {
-  readonly signedInRenderer: () => ReactElement;
-};
+type Props = { readonly signedInRenderer: () => JSX.Element };
 
 const provider = new firebase.auth.GoogleAuthProvider().addScope(SCOPES);
 
-const getAccessToken = (): string | null => {
+function getAccessToken(): string | null {
   const token = localStorage.getItem('access-token');
-  if (token == null) {
-    return null;
-  }
+  if (token == null) return null;
   const expireString = localStorage.getItem('access-token-expire');
-  if (expireString == null) {
-    return null;
-  }
+  if (expireString == null) return null;
   const expireDate = new Date(parseInt(expireString, 10));
-  if (expireDate < new Date()) {
-    return null;
-  }
+  if (expireDate < new Date()) return null;
   return token;
-};
+}
 
-const cacheAccessToken = (token: string): void => {
+function cacheAccessToken(token: string): void {
   const expireDate = new Date();
   expireDate.setMinutes(expireDate.getMinutes() + 30);
   localStorage.setItem('access-token', token);
   localStorage.setItem('access-token-expire', String(expireDate.getTime()));
-};
+}
 
-const FirebaseLoginBarrier = ({ signedInRenderer }: Props): ReactElement => {
+export default function FirebaseLoginBarrier({ signedInRenderer: App }: Props): JSX.Element {
   const [isSignedIn, setInSignedIn] = useState(false);
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (firebaseUser) => {
@@ -55,7 +47,7 @@ const FirebaseLoginBarrier = ({ signedInRenderer }: Props): ReactElement => {
     }
   }, []);
   if (isSignedIn) {
-    return signedInRenderer();
+    return <App />;
   }
   const signInAsync = () =>
     firebase
@@ -85,6 +77,4 @@ const FirebaseLoginBarrier = ({ signedInRenderer }: Props): ReactElement => {
       Sign In
     </Button>
   );
-};
-
-export default FirebaseLoginBarrier;
+}
