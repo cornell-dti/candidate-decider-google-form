@@ -1,14 +1,15 @@
-import React, { ReactElement } from 'react';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
-import { SheetData, Rating, Ratings, Comments } from './types';
-import SingleCandidateViewer from './SingleCandidateViewer';
-import SingleCandidateReviewer from './SingleCandidateReviewer';
+import React, { ReactElement } from 'react';
+
 import styles from './Reviewer.module.css';
+import SingleCandidateReviewer from './SingleCandidateReviewer';
+import SingleCandidateViewer from './SingleCandidateViewer';
+import { SheetData, Rating, Ratings, Comments } from './types';
 
 type Props = {
   readonly sheetData: SheetData;
@@ -33,10 +34,10 @@ const ReviewApplicationPanel = ({
   onToggleShowOthers,
   onRatingChange,
   onCommentChange,
-  className
+  className,
 }: Props): ReactElement => {
-  const previous = () => updateCandidateId(id => id - 1);
-  const next = () => updateCandidateId(id => id + 1);
+  const previous = () => updateCandidateId((id) => id - 1);
+  const next = () => updateCandidateId((id) => id + 1);
   return (
     <div className={className}>
       <div className={styles.Section}>
@@ -47,9 +48,9 @@ const ReviewApplicationPanel = ({
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={candidateId}
-              onChange={event => updateCandidateId((event.target?.value ?? 0) as number)}
+              onChange={(event) => updateCandidateId((event.target?.value ?? 0) as number)}
             >
-              {Array.from(Array(content.length).keys()).map(id => (
+              {Array.from(Array(content.length).keys()).map((id) => (
                 <MenuItem key={id} value={id}>
                   {id + 1}
                 </MenuItem>
@@ -72,8 +73,8 @@ const ReviewApplicationPanel = ({
           candidateId={candidateId}
           rating={ratings[candidateId] ?? null}
           comment={comments[candidateId] ?? ''}
-          onRatingChange={updatedRating => onRatingChange(updatedRating)}
-          onCommentChange={updatedComment => onCommentChange(updatedComment)}
+          onRatingChange={(updatedRating) => onRatingChange(updatedRating)}
+          onCommentChange={(updatedComment) => onCommentChange(updatedComment)}
         />
       </div>
       <div className={styles.Section}>

@@ -1,16 +1,17 @@
-import React, { ReactElement, useState, useEffect } from 'react';
-import firebase from 'firebase/app';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { SheetData } from './types';
-import { getSheetData } from './apis/gapi';
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import firebase from 'firebase/app';
+import React, { ReactElement, useState, useEffect } from 'react';
+
 import ReviewPanels from './ReviewPanels';
 import { getAppUser } from './apis/firebase-auth';
+import { getSheetData } from './apis/gapi';
+import { SheetData } from './types';
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const Wrapper = ({ children }: { readonly children: ReactElement }): ReactElement => (
   <MuiThemeProvider theme={theme}>
@@ -37,7 +38,7 @@ const searchParameters = (() => {
   const parameterList = window.location.search
     .substring(1)
     .split('&')
-    .map(part => part.split('='));
+    .map((part) => part.split('='));
   const map = new Map(parameterList as [string, string][]);
   const spreadsheetId = map.get('spreadsheetId');
   const range = map.get('range');
@@ -51,7 +52,7 @@ const MISSING_PARAMETER_MESSAGE = 'spreadsheetId and range must be in search par
 const FAILED_SHEET_FETCH_MESSAGE =
   "Failed to fetch sheet data due to potential auth failure. Maybe you are not granted the sheet's read permission.";
 
-const App = () => {
+export default function App(): JSX.Element {
   const [sheetData, setSheetData] = useState<SheetData | string>('Loading SheetData...');
   useEffect(() => {
     if (searchParameters == null) {
@@ -59,7 +60,7 @@ const App = () => {
       return;
     }
     const fetchAndSetSheetData = (): void => {
-      getSheetData(searchParameters.spreadsheetId, searchParameters.range).then(data => {
+      getSheetData(searchParameters.spreadsheetId, searchParameters.range).then((data) => {
         setSheetData(data ?? FAILED_SHEET_FETCH_MESSAGE);
         setTimeout(() => fetchAndSetSheetData(), 10000);
       });
@@ -92,6 +93,4 @@ const App = () => {
       />
     </Wrapper>
   );
-};
-
-export default App;
+}

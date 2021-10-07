@@ -1,13 +1,14 @@
-import React, { ReactElement, ChangeEvent, useState } from 'react';
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import { Rating } from './types';
-import { ratingsText, ratingsColors } from './ratings-util';
+import React, { ReactElement, ChangeEvent, useState } from 'react';
+
 import styles from './SingleCandidateReviewer.module.css';
+import { ratingsText, ratingsColors } from './ratings-util';
+import { Rating } from './types';
 
 type CommentEditorProps = {
   readonly comment: string;
@@ -23,7 +24,7 @@ const CommentEditor = ({ comment, onCommentChange }: CommentEditorProps): ReactE
         className={styles.CommentEditorTextInput}
         label="My comment"
         value={currentComment}
-        onChange={event => setCurrentComment(event.currentTarget.value)}
+        onChange={(event) => setCurrentComment(event.currentTarget.value)}
       />
       <Button variant="contained" color="primary" onClick={() => onCommentChange(currentComment)}>
         Save Comment
@@ -45,7 +46,7 @@ const SingleCandidateReviewer = ({
   rating,
   comment,
   onRatingChange,
-  onCommentChange
+  onCommentChange,
 }: Props): ReactElement => {
   const onRatingRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
     // eslint-disable-next-line prefer-destructuring
