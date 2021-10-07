@@ -1,12 +1,13 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import * as db from './apis/firestore';
-import { SheetData, Rating, Ratings, Comments, SheetVotes } from './types';
+
 import ReviewApplicationPanel from './ReviewApplicationPanel';
-import styles from './Reviewer.module.css';
-import ReviewLocalSidePanel from './ReviewLocalSidePanel';
 import ReviewGlobalSidePanel from './ReviewGlobalSidePanel';
-import { votingStatisticsPerPerson } from './ratings-util';
+import ReviewLocalSidePanel from './ReviewLocalSidePanel';
+import styles from './Reviewer.module.css';
 import { getAppUser } from './apis/firebase-auth';
+import * as db from './apis/firestore';
+import { votingStatisticsPerPerson } from './ratings-util';
+import { SheetData, Rating, Ratings, Comments, SheetVotes } from './types';
 
 type Props = {
   readonly spreadsheetId: string;
@@ -21,7 +22,7 @@ const ReviewPanels = ({ spreadsheetId, range, sheetData }: Props): ReactElement 
   const [candidateId, setCandidateId] = useState(0);
   const [showOthers, setShowOthers] = useState(false);
   useEffect(() => {
-    db.listen(`${spreadsheetId}_____${range}`, votes => {
+    db.listen(`${spreadsheetId}_____${range}`, (votes) => {
       const personalChoices = votes[getAppUser().email];
       const myRatings = personalChoices?.ratings ?? {};
       const myComments = personalChoices?.comments ?? {};
@@ -54,7 +55,7 @@ const ReviewPanels = ({ spreadsheetId, range, sheetData }: Props): ReactElement 
         candidateId={candidateId}
         updateCandidateId={setCandidateId}
         showOthers={showOthers}
-        onToggleShowOthers={() => setShowOthers(prev => !prev)}
+        onToggleShowOthers={() => setShowOthers((prev) => !prev)}
         onRatingChange={onRatingChange}
         onCommentChange={onCommentChange}
         className={styles.ReviewApplicationPanel}

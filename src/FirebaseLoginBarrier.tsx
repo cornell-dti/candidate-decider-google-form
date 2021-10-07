@@ -1,8 +1,9 @@
-import React, { ReactElement, useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import firebase from 'firebase/app';
-import { handleClientLoad, SCOPES } from './apis/gapi';
+import React, { ReactElement, useState, useEffect } from 'react';
+
 import { toAppUser, cacheAppUser } from './apis/firebase-auth';
+import { handleClientLoad, SCOPES } from './apis/gapi';
 
 type Props = {
   readonly signedInRenderer: () => ReactElement;
@@ -36,7 +37,7 @@ const cacheAccessToken = (token: string): void => {
 const FirebaseLoginBarrier = ({ signedInRenderer }: Props): ReactElement => {
   const [isSignedIn, setInSignedIn] = useState(false);
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(async firebaseUser => {
+    firebase.auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser == null) {
         setInSignedIn(false);
       } else {
@@ -60,9 +61,8 @@ const FirebaseLoginBarrier = ({ signedInRenderer }: Props): ReactElement => {
     firebase
       .auth()
       .signInWithPopup(provider)
-      .then(async result => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
+      .then(async (result) => {
+        // @ts-expect-error: accessToken exists
         const accessToken: string | null = result.credential?.accessToken ?? null;
         if (accessToken == null) {
           return;

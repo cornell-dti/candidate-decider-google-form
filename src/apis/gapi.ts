@@ -1,5 +1,4 @@
 // Unfortunate compromise to adapt to the global gapi library.
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import { SheetData } from '../types';
 
 // Client ID and API key from the Developer Console
@@ -20,7 +19,7 @@ async function initializeClient() {
       apiKey: API_KEY,
       clientId: CLIENT_ID,
       discoveryDocs: DISCOVERY_DOCS,
-      scope: SCOPES
+      scope: SCOPES,
     });
   } catch (error) {
     // eslint-disable-next-line no-alert
@@ -31,7 +30,6 @@ async function initializeClient() {
 export const handleClientLoad = (accessToken: string, onLoad: () => void): void =>
   gapi.load('client:auth2', async () => {
     await initializeClient();
-    // eslint-disable-next-line @typescript-eslint/camelcase
     gapi.client.setToken({ access_token: accessToken });
     onLoad();
   });
@@ -43,7 +41,7 @@ export const getSheetData = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let response: any;
   try {
-    // @ts-ignore
+    // @ts-expect-error: sheets exists
     response = await gapi.client.sheets.spreadsheets.values.get({ spreadsheetId, range });
   } catch (error) {
     return null;

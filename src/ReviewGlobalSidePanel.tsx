@@ -1,11 +1,12 @@
-import React, { ReactElement, useState } from 'react';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import { Button } from '@material-ui/core';
-import { SheetVotes } from './types';
-import { exportRatings, votingStatistics, exportAsCsv, RatingStatistics } from './ratings-util';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import React, { ReactElement, useState } from 'react';
+
 import RatingStatisticsList from './RatingStatisticsList';
 import styles from './Reviewer.module.css';
 import { getAppUser } from './apis/firebase-auth';
+import { exportRatings, votingStatistics, exportAsCsv, RatingStatistics } from './ratings-util';
+import { SheetVotes } from './types';
 
 type Props = {
   readonly expectedNumber: number;
@@ -20,7 +21,7 @@ const ReviewGlobalSidePanel = ({
   allVotes,
   allVotingStatistics,
   showOthers,
-  className
+  className,
 }: Props): ReactElement => {
   const [showCSV, setShowCSV] = useState(false);
   const myEmail = getAppUser().email;
@@ -29,7 +30,7 @@ const ReviewGlobalSidePanel = ({
   const globalProgress =
     (100 *
       Object.values(allVotes)
-        .map(vote => Object.keys(vote.ratings).length)
+        .map((vote) => Object.keys(vote.ratings).length)
         .reduce((acc, c) => acc + c, 0)) /
     (Object.keys(allVotes).length * expectedNumber);
   return (
@@ -59,7 +60,7 @@ const ReviewGlobalSidePanel = ({
       <div className={styles.Section}>
         <h3>Export</h3>
         <div>
-          <Button color="primary" onClick={() => setShowCSV(prev => !prev)}>
+          <Button color="primary" onClick={() => setShowCSV((prev) => !prev)}>
             {showCSV ? 'Hide' : 'Show'} CSV
           </Button>
           <pre>{showCSV && exportAsCsv(expectedNumber, allVotes)}</pre>

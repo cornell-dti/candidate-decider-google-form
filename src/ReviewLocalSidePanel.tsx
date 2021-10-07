@@ -1,10 +1,11 @@
-import React, { ReactElement } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { SheetVotes } from './types';
-import { ratingStatistics, RatingStatistics, ratingsText } from './ratings-util';
+import React, { ReactElement } from 'react';
+
 import RatingStatisticsList from './RatingStatisticsList';
 import styles from './Reviewer.module.css';
 import { getAppUser } from './apis/firebase-auth';
+import { ratingStatistics, RatingStatistics, ratingsText } from './ratings-util';
+import { SheetVotes } from './types';
 
 type Props = {
   readonly expectedNumber: number;
@@ -21,7 +22,7 @@ const ReviewLocalSidePanel = ({
   allVotingStatistics,
   candidateId,
   showOthers,
-  className
+  className,
 }: Props): ReactElement => {
   const myEmail = getAppUser().email;
   const { [myEmail]: myVote } = allVotes;
@@ -47,7 +48,7 @@ const ReviewLocalSidePanel = ({
         <div className={styles.Section}>
           <h3>All Votes on Candidate {candidateId + 1}</h3>
           <div>
-            {Object.keys(allVotes).map(email => {
+            {Object.keys(allVotes).map((email) => {
               const { displayName, ratings } = allVotes[email];
               const rating = ratings[candidateId];
               if (rating == null) {
@@ -62,7 +63,7 @@ const ReviewLocalSidePanel = ({
           </div>
           <h3>All Comments on Candidate {candidateId + 1}</h3>
           <div>
-            {Object.keys(allVotes).map(email => {
+            {Object.keys(allVotes).map((email) => {
               const { displayName, comments } = allVotes[email];
               const comment = comments[candidateId];
               if (comment == null) {
