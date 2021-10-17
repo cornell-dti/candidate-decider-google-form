@@ -6,6 +6,7 @@ import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import React from 'react';
 
+import CandidateSearch from './CandidateSearch';
 import styles from './Reviewer.module.css';
 import SingleCandidateReviewer from './SingleCandidateReviewer';
 import SingleCandidateViewer from './SingleCandidateViewer';
@@ -38,9 +39,11 @@ export default function ReviewApplicationPanel({
 }: Props): JSX.Element {
   const previous = () => updateCandidateId((id) => id - 1);
   const next = () => updateCandidateId((id) => id + 1);
+
   return (
     <div className={className}>
       <div className={styles.Section}>
+        <CandidateSearch sheetData={{ header, content }} updateCandidateId={updateCandidateId} />
         <div className={styles.Section}>
           <span>Candidate ID: </span>
           <FormControl>
