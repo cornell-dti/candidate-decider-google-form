@@ -11,7 +11,7 @@ type Props = {
 
 type Option = {
   id: number;
-  name: string;
+  displayName: string;
 };
 
 type Question = {
@@ -23,18 +23,25 @@ const CandidateSearch = ({
   sheetData: { header, content },
   updateCandidateId,
 }: Props): JSX.Element => {
-  const namesPos = header
-    .map((question: string, i: number) => ({ question, pos: i }))
-    .filter((question: Question) => question.question.toLowerCase().includes('name'));
+  const enumeratedQuestions = header.map((question: string, i: number) => ({ question, pos: i }));
+
+  const namesPos = enumeratedQuestions.filter((question: Question) =>
+    question.question.toLowerCase().includes('name')
+  );
+
+  const netIdPos = enumeratedQuestions.find((question: Question) =>
+    question.question.toLowerCase().includes('netid')
+  );
 
   const options: Option[] = content.map((response: string[], i: number) => {
-    let name = '';
+    let displayName = '';
     namesPos.forEach((pos: { pos: number }) => {
-      name += `${response[pos.pos]} `;
+      displayName += `${response[pos.pos]} `;
     });
+    if (netIdPos) displayName += ` (${response[netIdPos.pos]})`;
     return {
       id: i,
-      name,
+      displayName,
     };
   });
 
@@ -45,7 +52,7 @@ const CandidateSearch = ({
       }}
       options={options}
       renderInput={(params) => <TextField {...params} label="Candidate Search" />}
-      getOptionLabel={(option) => `${option.id + 1} - ${option.name}`}
+      getOptionLabel={(option) => `${option.id + 1} - ${option.displayName}`}
       getOptionSelected={(option: Option, val: Option) => {
         return option.id === val.id;
       }}
