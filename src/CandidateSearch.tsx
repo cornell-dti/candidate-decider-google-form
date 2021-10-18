@@ -42,6 +42,7 @@ const CandidateSearch = ({
     return {
       id: i,
       displayName,
+
     };
   });
 
