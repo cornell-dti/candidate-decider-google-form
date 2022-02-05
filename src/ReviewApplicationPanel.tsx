@@ -43,22 +43,20 @@ export default function ReviewApplicationPanel({
   const [customOrder, setCustomOrder] = useState<number[]>([]);
   const effectiveOrder = customOrder.length ? customOrder : defaultOrder;
 
-  const getIndex = (id: number) => {
-    return effectiveOrder.findIndex(num => num === id);
-  }
+  const getIndex = (id: number) => effectiveOrder.findIndex((num) => num === id);
 
   const previous = () => {
     const index = getIndex(candidateId);
-    if(index >= 0) {
+    if (index >= 0) {
       updateCandidateId(effectiveOrder[index - 1]);
     }
-  }
+  };
   const next = () => {
     const index = getIndex(candidateId);
-    if(index >= 0) {
+    if (index >= 0) {
       updateCandidateId(effectiveOrder[index + 1]);
     }
-  }
+  };
   return (
     <div className={className}>
       <div className={styles.Section}>
