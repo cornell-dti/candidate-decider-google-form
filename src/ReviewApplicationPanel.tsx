@@ -4,9 +4,10 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
-import React from 'react';
+import { useState } from 'react';
 
 import CandidateSearch from './CandidateSearch';
+import CustomOrderMenu from './CustomOrderMenu';
 import styles from './Reviewer.module.css';
 import SingleCandidateReviewer from './SingleCandidateReviewer';
 import SingleCandidateViewer from './SingleCandidateViewer';
@@ -37,13 +38,30 @@ export default function ReviewApplicationPanel({
   onCommentChange,
   className,
 }: Props): JSX.Element {
-  const previous = () => updateCandidateId((id) => id - 1);
-  const next = () => updateCandidateId((id) => id + 1);
+  // const [selectIndex, setSelectIndex] = useState(0);
+  const defaultOrder = Array.from(Array(content.length).keys());
+  const [customOrder, setCustomOrder] = useState<number[]>([]);
+  const effectiveOrder = customOrder.length ? customOrder : defaultOrder;
 
+  const getIndex = (id: number) => effectiveOrder.findIndex((num) => num === id);
+
+  const previous = () => {
+    const index = getIndex(candidateId);
+    if (index >= 0) {
+      updateCandidateId(effectiveOrder[index - 1]);
+    }
+  };
+  const next = () => {
+    const index = getIndex(candidateId);
+    if (index >= 0) {
+      updateCandidateId(effectiveOrder[index + 1]);
+    }
+  };
   return (
     <div className={className}>
       <div className={styles.Section}>
         <CandidateSearch sheetData={{ header, content }} updateCandidateId={updateCandidateId} />
+        <CustomOrderMenu contentLength={content.length} setCustomOrder={setCustomOrder} />
         <div className={styles.Section}>
           <span>Candidate ID: </span>
           <FormControl>
@@ -53,7 +71,7 @@ export default function ReviewApplicationPanel({
               value={candidateId}
               onChange={(event) => updateCandidateId((event.target?.value ?? 0) as number)}
             >
-              {Array.from(Array(content.length).keys()).map((id) => (
+              {(customOrder.length ? customOrder : defaultOrder).map((id) => (
                 <MenuItem key={id} value={id}>
                   {id + 1}
                 </MenuItem>
@@ -62,10 +80,10 @@ export default function ReviewApplicationPanel({
           </FormControl>
           <span>of {content.length}.</span>
           <ButtonGroup color="primary" className={styles.Button}>
-            <Button disabled={candidateId === 0} onClick={previous}>
+            <Button disabled={getIndex(candidateId) === 0} onClick={previous}>
               Previous
             </Button>
-            <Button disabled={candidateId === content.length - 1} onClick={next}>
+            <Button disabled={getIndex(candidateId) === effectiveOrder.length - 1} onClick={next}>
               Next
             </Button>
           </ButtonGroup>

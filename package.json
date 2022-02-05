@@ -20,8 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint . --ext .ts --ext .tsx",
-    "format": "prettier --write '**/*.{ts,tsx,css,html}'",
-    "format:check": "prettier --check '**/*.{ts,tsx,css,html}'",
+    "format": "prettier --write **/*.{ts,tsx,css,html}",
+    "format:check": "prettier --check **/*.{ts,tsx,css,html}",
     "deploy": "yarn build && firebase deploy"
   },
   "eslintConfig": {
