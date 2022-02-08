@@ -4,10 +4,13 @@ import { useState } from 'react';
 
 type Props = {
   readonly contentLength: number;
-  readonly setCustomOrder: (order: number[]) => void;
+  readonly updateCustomOrder: (updater: number[] | ((previous: number[]) => number[])) => void;
 };
 
-export default function CustomOrderMenu({ contentLength, setCustomOrder }: Props): JSX.Element {
+export default function CustomOrderMenu({
+  contentLength,
+  updateCustomOrder: setCustomOrder,
+}: Props): JSX.Element {
   const [errorMsg, setErrorMsg] = useState('');
   const [currentOrder, setCurrentOrder] = useState('');
 

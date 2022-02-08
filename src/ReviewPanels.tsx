@@ -46,6 +46,7 @@ export default function ReviewPanels({ spreadsheetId, range, sheetData }: Props)
   const onCommentChange = (comment: string): void => {
     db.update(`${spreadsheetId}_____${range}`, ratings, { ...comments, [candidateId]: comment });
   };
+  const [customOrder, setCustomOrder] = useState<number[]>([]);
   return (
     <div key={Object.keys(allVotes).length} className={styles.ReviewPanels}>
       <ReviewApplicationPanel
@@ -54,6 +55,8 @@ export default function ReviewPanels({ spreadsheetId, range, sheetData }: Props)
         comments={comments}
         candidateId={candidateId}
         updateCandidateId={setCandidateId}
+        customOrder={customOrder}
+        updateCustomOrder={setCustomOrder}
         showOthers={showOthers}
         onToggleShowOthers={() => setShowOthers((prev) => !prev)}
         onRatingChange={onRatingChange}

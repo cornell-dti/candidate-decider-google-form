@@ -4,7 +4,6 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
-import { useState } from 'react';
 
 import CandidateSearch from './CandidateSearch';
 import CustomOrderMenu from './CustomOrderMenu';
@@ -19,6 +18,8 @@ type Props = {
   readonly comments: Comments;
   readonly candidateId: number;
   readonly updateCandidateId: (updater: number | ((previous: number) => number)) => void;
+  readonly customOrder: number[];
+  readonly updateCustomOrder: (updater: number[] | ((previous: number[]) => number[])) => void;
   readonly showOthers: boolean;
   readonly onToggleShowOthers: () => void;
   readonly onRatingChange: (updatedRating: Rating | null) => void;
@@ -32,6 +33,8 @@ export default function ReviewApplicationPanel({
   comments,
   candidateId,
   updateCandidateId,
+  customOrder,
+  updateCustomOrder,
   showOthers,
   onToggleShowOthers,
   onRatingChange,
@@ -40,7 +43,6 @@ export default function ReviewApplicationPanel({
 }: Props): JSX.Element {
   // const [selectIndex, setSelectIndex] = useState(0);
   const defaultOrder = Array.from(Array(content.length).keys());
-  const [customOrder, setCustomOrder] = useState<number[]>([]);
   const effectiveOrder = customOrder.length ? customOrder : defaultOrder;
 
   const getIndex = (id: number) => effectiveOrder.findIndex((num) => num === id);
@@ -61,7 +63,7 @@ export default function ReviewApplicationPanel({
     <div className={className}>
       <div className={styles.Section}>
         <CandidateSearch sheetData={{ header, content }} updateCandidateId={updateCandidateId} />
-        <CustomOrderMenu contentLength={content.length} setCustomOrder={setCustomOrder} />
+        <CustomOrderMenu contentLength={content.length} updateCustomOrder={updateCustomOrder} />
         <div className={styles.Section}>
           <span>Candidate ID: </span>
           <FormControl>
